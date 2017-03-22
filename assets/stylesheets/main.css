@@ -10,12 +10,19 @@
   margin: 0 auto;
 }
 
+.cell {
+  font-size: 1em;
+  vertical-align: baseline;
+  text-align: center;
+}
+
 .even {
   height: 45px;
   width: 45px;
   display: inline-block;
   border: 1px black solid;
   background-color: #FF6A00;
+  color: #FF6A00;
 }
 
 .odd {
