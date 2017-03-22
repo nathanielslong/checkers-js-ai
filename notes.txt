@@ -1,0 +1,1 @@
+add valid move checker to aid terminal conditions
