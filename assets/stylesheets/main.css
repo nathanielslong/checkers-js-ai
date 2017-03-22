@@ -1,0 +1,27 @@
+.container {
+  height: 100%;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.board {
+  height: 500px;
+  width: 500px;
+  margin: 0 auto;
+}
+
+.even {
+  height: 45px;
+  width: 45px;
+  display: inline-block;
+  border: 1px black solid;
+  background-color: #FF6A00;
+}
+
+.odd {
+  height: 45px;
+  width: 45px;
+  display: inline-block;
+  border: 1px black solid;
+  background-color: #AA4600;
+}
