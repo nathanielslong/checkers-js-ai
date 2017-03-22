@@ -58,7 +58,33 @@
   display: none;
 }
 
+.level {
+  margin: 0 15px;
+  color: black;
+  cursor: pointer;
+}
+
+.not-selected {
+  opacity: 0.5;
+}
+
+.not-selected:hover {
+  opacity: 1;
+}
+
 .ingame {
   display: none;
   color: black;
+}
+
+.ingame > p {
+  margin: 0px;
+}
+
+.robot {
+  opacity: 0.5;
+}
+
+.start:hover {
+  opacity: 1;
 }
