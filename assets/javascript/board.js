@@ -84,7 +84,7 @@ var Piece = function(color, element, position) {
   // Sets DOM element of the piece
   this.element = element;
 
-  // Sets initial position of the piece
+  // Sets initial position of the piece, index in the board array
   this.position = position;
 
   // keeps track of whether piece has been promoted
@@ -96,8 +96,16 @@ var Piece = function(color, element, position) {
 
   this.color = color;
 
-  // function checks if piece can jump any pieces
+  // function checks if piece can jump any pieces: returns boolean
   this.canJumpAny = function() {
+    if (this.color == "white") {
+      if (!this.king) {
+        if (this.position % 10 == 0) {
+        }
+      } else {
+      }
+    } else {
+    }
   }
 }
 
@@ -159,15 +167,15 @@ var Game = function(autoPlayer) {
 // Make score function for checkers
 $(document).ready(function() {
   var initialBoard = ['E','B','E','B','E','B','E','B','E','B',
-    'B','E','B','E','B','E','B','E','B','E',
-    'E','B','E','B','E','B','E','B','E','B',
-    'B','E','B','E','B','E','B','E','B','E',
-    'E','E','E','E','E','E','E','E','E','E',
-    'E','E','E','E','E','E','E','E','E','E',
-    'E','W','E','W','E','W','E','W','E','W',
-    'W','E','W','E','W','E','W','E','W','E',
-    'E','W','E','W','E','W','E','W','E','W',
-    'W','E','W','E','W','E','W','E','W','E'];
+                      'B','E','B','E','B','E','B','E','B','E',
+                      'E','B','E','B','E','B','E','B','E','B',
+                      'B','E','B','E','B','E','B','E','B','E',
+                      'E','E','E','E','E','E','E','E','E','E',
+                      'E','E','E','E','E','E','E','E','E','E',
+                      'E','W','E','W','E','W','E','W','E','W',
+                      'W','E','W','E','W','E','W','E','W','E',
+                      'E','W','E','W','E','W','E','W','E','W',
+                      'W','E','W','E','W','E','W','E','W','E'];
 
     var loadBoard = $('.board div');
 

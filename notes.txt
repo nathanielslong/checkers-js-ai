@@ -2,6 +2,8 @@ add valid move checker to aid terminal conditions
 
 legalMoves(piece) function needed
 
+We'll add double jumps later
+
 pieces represented as an object seems correct
 
 Score function
@@ -53,8 +55,105 @@ So left side case: if index % 10 = 0:
                           black or white: +11, -9
 
                       else if king and position filled:
+                        if filled with same color:
+                          cannot move
+                        else:
+                          black: if +11 white and +22 empty:
+                            can capture
+                              else if -9 white and -18 empty:
+                            can capture
+                          white: if +11 black and +22 empty:
+                            can capture
+                              else if -9 black and -18 empty:
+                            can capture
 
 
 Right side case: if index % 9 = 0, moves for not king:
-                        black: +11 only location
-                        white: -9 only location
+                      if not king and position empty:
+                        black: +9 only location
+                        white: -11 only location
+
+                      else if not king and position filled:
+                        if filled with same color:
+                          cannot move
+                        else:
+                          black: if +9 white and +18 empty:
+                            can capture
+                                 else
+                            cannot move
+                          white: if -11 black and -22 empty:
+                            can capture
+                                 else
+                            cannot move
+
+                      if king and position empty:
+                        if position index 9:
+                          black or white: +9
+                        else if position index 99:
+                          black or white: -11
+                        else:
+                          black or white: +9, -11
+
+                      else if king and position filled:
+                        if filled with same color:
+                          cannot move
+                        else:
+                          black: if +9 white and +18 empty:
+                            can capture
+                              else if -11 white and -22 empty:
+                            can capture
+                          white: if +9 black and +18 empty:
+                            can capture
+                              else if -11 black and -22 empty:
+                            can capture
+
+Valid moves for not sides and for kings on top and bottom
+                      if not king and position empty or if king and index < 10 or >= 90:
+                        black: +9, +11
+                        white: -9, -11
+
+                      else if not king or special king and position filled:
+                        if filled with same color:
+                          cannot move
+                        else:
+                          black: if +9 white and +18 empty
+                            can capture
+                                else if +11 white and +22 empty
+                            can capture
+                                else
+                            cannot move
+                          white: if -9 black and -18 empty
+                            can capture
+                                else if -11 white and -22 empty
+                            can capture
+                                else
+                            cannot move
+
+For Kings on middle parts
+                      if position empty:
+                        black or white: +9, +11, -9, -11
+
+                      else
+                        if filled with same color:
+                          cannot move
+                        else
+                          black: if +9 white and +18 empty
+                            can capture
+                                 else if +11 white and +22 empty
+                            can capture
+                                 else if -11 white and -22 empty
+                            can capture
+                                 else if -9 white and -18 empty
+                            can capture
+                                else
+                            cannot move
+                          white: if +9 black and +18 empty
+                            can capture
+                                 else if +11 black and +22 empty
+                            can capture
+                                 else if -11 black and -22 empty
+                            can capture
+                                 else if -9 black and -18 empty
+                            can capture
+                                else
+                            cannot move
