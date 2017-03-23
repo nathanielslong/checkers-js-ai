@@ -78,6 +78,29 @@ var State = function(old) {
   }
 }
 
+// Piece object. Keep track of individual pieces
+
+var Piece = function(color, element, position) {
+  // Sets DOM element of the piece
+  this.element = element;
+
+  // Sets initial position of the piece
+  this.position = position;
+
+  // keeps track of whether piece has been promoted
+  this.king = false;
+
+  this.makeKing = function() {
+    this.king = true;
+  }
+
+  this.color = color;
+
+  // function checks if piece can jump any pieces
+  this.canJumpAny = function() {
+  }
+}
+
 // This function defines the game itself. this contains the information of what sort of AI player, current game state, and whether the game is still running. It also controls moving the game to different states and a way to start the game.
 var Game = function(autoPlayer) {
   this.ai = autoPlayer;
@@ -133,6 +156,7 @@ var Game = function(autoPlayer) {
   }
 }
 
+// Make score function for checkers
 $(document).ready(function() {
   var initialBoard = ['E','B','E','B','E','B','E','B','E','B',
     'B','E','B','E','B','E','B','E','B','E',

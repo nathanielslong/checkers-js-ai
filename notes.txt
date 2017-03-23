@@ -1,1 +1,60 @@
 add valid move checker to aid terminal conditions
+
+legalMoves(piece) function needed
+
+pieces represented as an object seems correct
+
+Score function
+
+alright, lets think about move representation
+
+this.currentState.board = ['E','B','E','B','E','B','E','B','E','B',
+                           'B','E','B','E','B','E','B','E','B','E',
+                           'E','B','E','B','E','B','E','B','E','B',
+                           'B','E','B','E','B','E','B','E','B','E',
+                           'E','E','E','E','E','E','E','E','E','E',
+                           'E','E','E','E','E','E','E','E','E','E',
+                           'E','W','E','W','E','W','E','W','E','W',
+                           'W','E','W','E','W','E','W','E','W','E',
+                           'E','W','E','W','E','W','E','W','E','W',
+                           'W','E','W','E','W','E','W','E','W','E']
+
+Not king black pieces can only move to indexes greater than itself
+Not king white pieces can only move to indexes less than itself
+
+okay, this one is interesting. how do we do diagonals?
+its not too bad in general. It's always add same index. unless piece is against a wall
+position empty  means position to be moved to. This pseudocode is a bit backwards, but we'll fix that when we write the actual code
+
+So left side case: if index % 10 = 0:
+                      if not king and position empty:
+                        black: +11 only location
+                        white: -9 only location
+
+                      else if not king and position filled:
+                        if filled with same color:
+                          cannot move
+                        else:
+                          black: if +11 white and +22 empty:
+                            can capture
+                                 else
+                            cannot move
+                          white: if -9 black and -18 empty:
+                            can capture
+                                 else
+                            cannot move
+
+                      if king and position empty:
+                        if position index 0:
+                          black or white: +11
+                        else if position index 90:
+                          black or white: -9
+                        else:
+                          black or white: +11, -9
+
+                      else if king and position filled:
+
+
+Right side case: if index % 9 = 0, moves for not king:
+                        black: +11 only location
+                        white: -9 only location
