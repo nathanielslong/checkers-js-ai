@@ -31,20 +31,176 @@ var State = function(old) {
     this.turn = old.turn;
   }
 
+  this.position = function(index) {
+    return this.board[index];
+  }
+
+  // check if is king, return boolean
+  this.isKing = function(index) {
+    /K/.test(this.position(index));
+  }
+
+  // get opposing color
+  this.oppColor = function(index) {
+    return this.position(index) == "W" ? "B" : "W";
+  }
+
+  // set movement functions for each direction, check if empty space. Boolean functions
+  this.canMoveLowerLeft = function(index) {
+    this.position(index + 9) == "E";
+  }
+
+  this.canMoveLowerRight = function(index) {
+    this.position(index + 11) == "E";
+  }
+
+  this.canMoveUpperLeft = function(index) {
+    this.position(index - 11) == "E";
+  }
+
+  this.canMoveUpperRight = function(index) {
+    this.position(index - 9) == "E";
+  }
+
+  //make jump checker functions, Boolean
+  this.canJumpLowerLeft = function(index) {
+    this.position[index + 9] == this.oppColor(index) && this.position[index + 18] == "E";
+  }
+
+  this.canJumpLowerRight = function(index) {
+    this.position[index + 11] == this.oppColor(index) && this.position[index + 22] == "E";
+  }
+
+  this.canJumpUpperLeft = function(index) {
+    this.position[index - 11] == this.oppColor(index) && this.position[index - 22] == "E";
+  }
+
+  this.canJumpUpperRight = function(index) {
+    this.position[index - 9] == this.oppColor(index) && this.position[index - 18] == "E";
+  }
+
+  // checks if a given piece has any jumps (currently only single jumps)
+  this.canJumpAny = function(index) {
+    var jumpSpaces = [];
+    // if white, white conditions
+    if (/W/.test(this.position(index))) {
+      // if left wall
+      if (index % 10 == 0) {
+        if (this.canJumpUpperRight(index)) {
+          jumpSpaces.push(index - 18);
+        }
+        if (this.isKing(index)) {
+          if (this.canJumpLowerRight(index)) {
+            jumpSpaces.push(index + 22);
+          }
+        }
+        //if right wall
+      } else if (index % 9 == 0) {
+        if (this.canJumpUpperLeft(index)) {
+          jumpSpaces.push(index - 22);
+        }
+        if (this.isKing(index)) {
+          if (this.canJumpLowerLeft(index)) {
+            jumpSpaces.push(index + 18);
+          }
+        }
+        // everywhere else
+      } else {
+        if (!this.isKing(index) || (this.isKing(index) && index > 90)){
+          if (this.canJumpUpperRight(index)) {
+            jumpSpaces.push(index - 18);
+          }
+          if (this.canJumpUpperLeft(index)) {
+            jumpSpaces.push(index - 22);
+          }
+        }
+        if (this.isKing(index) && index > 10 && index < 90 ) {
+          if (this.canJumpUpperRight(index)) {
+            jumpSpaces.push(index - 18);
+          }
+          if (this.canJumpUpperLeft(index)) {
+            jumpSpaces.push(index - 22);
+          }
+          if (this.canJumpLowerRight(index)) {
+            jumpSpaces.push(index + 22);
+          }
+          if (this.canJumpLowerLeft(index)) {
+            jumpSpaces.push(index + 18);
+          }
+        }
+        if (this.isKing(index) && index < 10) {
+          if (this.canJumpLowerRight(index)) {
+            jumpSpaces.push(index + 22);
+          }
+          if (this.canJumpLowerLeft(index)) {
+            jumpSpaces.push(index + 18);
+          }
+        }
+      }
+    } else { // black actions
+      // if left wall
+      if (index % 10 == 0) {
+        if (this.canJumpLowerRight(index)) {
+          jumpSpaces.push(index + 22);
+        }
+        if (this.isKing(index)) {
+          if (this.canJumpUpperRight(index)) {
+            jumpSpaces.push(index - 18);
+          }
+        }
+        //if right wall
+      } else if (index % 9 == 0) {
+        if (this.canJumpLowerLeft(index)) {
+          jumpSpaces.push(index + 18);
+        }
+        if (this.isKing(index)) {
+          if (this.canJumpUpperLeft(index)) {
+            jumpSpaces.push(index - 22);
+          }
+        }
+        // everywhere else
+      } else {
+        if (!this.isKing(index) || (this.isKing(index) && index > 90)){
+          if (this.canJumpUpperRight(index)) {
+            jumpSpaces.push(index - 18);
+          }
+          if (this.canJumpUpperLeft(index)) {
+            jumpSpaces.push(index - 22);
+          }
+        }
+        if (this.isKing(index) && index > 10 && index < 90 ) {
+          if (this.canJumpUpperRight(index)) {
+            jumpSpaces.push(index - 18);
+          }
+          if (this.canJumpUpperLeft(index)) {
+            jumpSpaces.push(index - 22);
+          }
+          if (this.canJumpLowerRight(index)) {
+            jumpSpaces.push(index + 22);
+          }
+          if (this.canJumpLowerLeft(index)) {
+            jumpSpaces.push(index + 18);
+          }
+        }
+        if (this.isKing(index) && index < 10) {
+          if (this.canJumpLowerRight(index)) {
+            jumpSpaces.push(index + 22);
+          }
+          if (this.canJumpLowerLeft(index)) {
+            jumpSpaces.push(index + 18);
+          }
+        }
+      }
+    }
+  }
+
+  // Checks for movable spots
+  this.canMoveTo = function(index) {
+  }
+
   // Now we define functions of state
   this.advanceTurn = function() {
     this.turn = this.turn == "white" ? "black" : "white";
-  }
-
-  // EmptyCells returns the indexes of the empty positions
-  this.emptyCells = function() {
-    var indexes = [];
-    for (i = 0; i < 100; i++) {
-      if (this.board[i] == 0) {
-        indexes.push(i)
-      }
-    }
-    return indexes;
   }
 
   // IsTerminal checks if the current state is a terminal state by checking each possible win condition and draw condition. Returns true if terminal, false if not.
@@ -94,99 +250,6 @@ var Game = function(autoPlayer) {
   this.currentState.turn = "white";
 
   this.status = "beginning";
-
-  this.position = function(index) {
-    return this.currentState.board[index];
-  }
-
-  // set movement functions for each direction, check if empty space. Boolean functions
-  this.canMoveLowerLeft = function(index) {
-    this.position(index + 9) == "E";
-  }
-
-  this.canMoveLowerRight = function(index) {
-    this.position(index + 11) == "E";
-  }
-
-  this.canMoveUpperLeft = function(index) {
-    this.position(index - 11) == "E";
-  }
-
-  this.canMoveUpperRight = function(index) {
-    this.position(index - 9) == "E";
-  }
-
-  //make jump checker functions, Boolean
-  this.canJumpLowerLeft = function(index) {
-    var oppColor = this.position(index) == "W" ? "B" : "W";
-    this.position[index + 9] == oppColor && this.position[index + 18] == "E";
-  }
-
-  this.canJumpLowerRight = function(index) {
-    var oppColor = this.position(index) == "W" ? "B" : "W";
-    this.position[index + 11] == oppColor && this.position[index + 22] == "E";
-  }
-
-  this.canJumpUpperLeft = function(index) {
-    var oppColor = this.position(index) == "W" ? "B" : "W";
-    this.position[index - 11] == oppColor && this.position[index - 22] == "E";
-  }
-
-  this.canJumpUpperRight = function(index) {
-    var oppColor = this.position(index) == "W" ? "B" : "W";
-    this.position[index - 9] == oppColor && this.position[index - 18] == "E";
-  }
-
-  // checks if a given piece has any jumps (currently only single jumps)
-  this.canJumpAny = function(index) {
-    var jumpSpaces = [];
-    // if white, white conditions
-    if (/W/.test(this.position(index))) {
-      // if left wall
-      if (index % 10 == 0) {
-        if (this.canJumpUpperRight(index)) {
-          jumpSpaces.push(index - 18);
-        }
-        //if right wall
-      } else if (index % 9 == 0) {
-        if (this.canJumpUpperLeft(index)) {
-          jumpSpaces.push(index - 22);
-        }
-        // everywhere else
-      } else {
-        if (this.canJumpUpperRight(index)) {
-          jumpSpaces.push(index - 18);
-        }
-        if (this.canJumpUpperLeft(index)) {
-          jumpSpaces.push(index - 22);
-        }
-      }
-    } else { // black actions
-      // if left wall
-      if (index % 10 == 0) {
-        if (this.canJumpLowerRight(index)) {
-          jumpSpaces.push(index + 22);
-        }
-        //if right wall
-      } else if (index % 9 == 0) {
-        if (this.canJumpLowerLeft(index)) {
-          jumpSpaces.push(index + 18);
-        }
-        // everywhere else
-      } else {
-        if (this.canJumpLowerRight(index)) {
-          jumpSpaces.push(index + 22);
-        }
-        if (this.canJumpLowerLeft(index)) {
-          jumpSpaces.push(index + 18);
-        }
-      }
-    }
-  }
-
-  // Checks for movable spots
-  this.canMoveTo = function(index) {
-  }
 
   // This next function advances the game ahead one state
   this.advanceTo = function(_state) {
