@@ -15,7 +15,7 @@ var State = function(old) {
   // result: the result of the game given the current state
   this.result = "still running";
 
-  this.board = [];
+  this.board = initialBoard;
 
   // This conditional is the object constructor. if old exists, the state is constructed given the parameters of the old state.
   if (typeof old !== "undefined") {
@@ -47,36 +47,36 @@ var State = function(old) {
 
   // set movement functions for each direction, check if empty space. Boolean functions
   this.canMoveLowerLeft = function(index) {
-    this.position(index + 9) == "E";
+    return this.position(index + 9) == "E";
   }
 
   this.canMoveLowerRight = function(index) {
-    this.position(index + 11) == "E";
+    return this.position(index + 11) == "E";
   }
 
   this.canMoveUpperLeft = function(index) {
-    this.position(index - 11) == "E";
+    return this.position(index - 11) == "E";
   }
 
   this.canMoveUpperRight = function(index) {
-    this.position(index - 9) == "E";
+    return this.position(index - 9) == "E";
   }
 
   //make jump checker functions, Boolean
   this.canJumpLowerLeft = function(index) {
-    this.position[index + 9] == this.oppColor(index) && this.position[index + 18] == "E";
+    return this.position[index + 9] == this.oppColor(index) && this.position[index + 18] == "E";
   }
 
   this.canJumpLowerRight = function(index) {
-    this.position[index + 11] == this.oppColor(index) && this.position[index + 22] == "E";
+    return this.position[index + 11] == this.oppColor(index) && this.position[index + 22] == "E";
   }
 
   this.canJumpUpperLeft = function(index) {
-    this.position[index - 11] == this.oppColor(index) && this.position[index - 22] == "E";
+    return this.position[index - 11] == this.oppColor(index) && this.position[index - 22] == "E";
   }
 
   this.canJumpUpperRight = function(index) {
-    this.position[index - 9] == this.oppColor(index) && this.position[index - 18] == "E";
+    return this.position[index - 9] == this.oppColor(index) && this.position[index - 18] == "E";
   }
 
   // checks if a given piece has any jumps (currently only single jumps)
@@ -84,6 +84,7 @@ var State = function(old) {
     var jumpSpaces = [];
     // if white, white conditions
     if (/W/.test(this.position(index))) {
+      console.log("white");
       // if left wall
       if (index % 10 == 0) {
         if (this.canJumpUpperRight(index)) {
@@ -192,11 +193,146 @@ var State = function(old) {
         }
       }
     }
+    return jumpSpaces;
   }
 
-  // Checks for movable spots
-  this.canMoveTo = function(index) {
+  // checks if a given piece has any valid moves
+  this.canMoveAny = function(index) {
+    if (this.position(index) !== "E") {
+      console.log("not an e");
+      var moveSpaces = [];
+      // if white, white conditions
+      if (/W/.test(this.position(index))) {
+        // if left wall
+        if (index % 10 == 0) {
+          if (this.canMoveUpperRight(index)) {
+            MoveSpaces.push(index - 9);
+          }
+          if (this.isKing(index)) {
+            if (this.canMoveLowerRight(index)) {
+              moveSpaces.push(index + 11);
+            }
+          }
+          //if right wall
+        } else if (index % 9 == 0) {
+          if (this.canMoveUpperLeft(index)) {
+            moveSpaces.push(index - 11);
+          }
+          if (this.isKing(index)) {
+            if (this.canMoveLowerLeft(index)) {
+              moveSpaces.push(index + 9);
+            }
+          }
+          // everywhere else
+        } else {
+          if (!this.isKing(index) || (this.isKing(index) && index > 90)){
+            if (this.canMoveUpperRight(index)) {
+              moveSpaces.push(index - 9);
+            }
+            if (this.canMoveUpperLeft(index)) {
+              moveSpaces.push(index - 11);
+            }
+          }
+          if (this.isKing(index) && index > 10 && index < 90 ) {
+            if (this.canMoveUpperRight(index)) {
+              moveSpaces.push(index - 9);
+            }
+            if (this.canMoveUpperLeft(index)) {
+              moveSpaces.push(index - 11);
+            }
+            if (this.canMoveLowerRight(index)) {
+              moveSpaces.push(index + 11);
+            }
+            if (this.canMoveLowerLeft(index)) {
+              moveSpaces.push(index + 9);
+            }
+          }
+          if (this.isKing(index) && index < 10) {
+            if (this.canMoveLowerRight(index)) {
+              moveSpaces.push(index + 11);
+            }
+            if (this.canMoveLowerLeft(index)) {
+              moveSpaces.push(index + 9);
+            }
+          }
+        }
+      } else { // black actions
+        // if left wall
+        if (index % 10 == 0) {
+          if (this.canMoveLowerRight(index)) {
+            moveSpaces.push(index + 11);
+          }
+          if (this.isKing(index)) {
+            if (this.canMoveUpperRight(index)) {
+              moveSpaces.push(index - 9);
+            }
+          }
+          //if right wall
+        } else if (index % 9 == 0) {
+          if (this.canMoveLowerLeft(index)) {
+            moveSpaces.push(index + 9);
+          }
+          if (this.isKing(index)) {
+            if (this.canMoveUpperLeft(index)) {
+              moveSpaces.push(index - 11);
+            }
+          }
+          // everywhere else
+        } else {
+          if (!this.isKing(index) || (this.isKing(index) && index > 90)){
+            if (this.canMoveUpperRight(index)) {
+              moveSpaces.push(index - 9);
+            }
+            if (this.canMoveUpperLeft(index)) {
+              moveSpaces.push(index - 11);
+            }
+          }
+          if (this.isKing(index) && index > 10 && index < 90 ) {
+            if (this.canMoveUpperRight(index)) {
+              moveSpaces.push(index - 9);
+            }
+            if (this.canMoveUpperLeft(index)) {
+              moveSpaces.push(index - 11);
+            }
+            if (this.canMoveLowerRight(index)) {
+              moveSpaces.push(index + 11);
+            }
+            if (this.canMoveLowerLeft(index)) {
+              moveSpaces.push(index + 9);
+            }
+          }
+          if (this.isKing(index) && index < 10) {
+            if (this.canMoveLowerRight(index)) {
+              moveSpaces.push(index + 11);
+            }
+            if (this.canMoveLowerLeft(index)) {
+              moveSpaces.push(index + 9);
+            }
+          }
+        }
+      }
+      return moveSpaces;
+
+    }
   }
+
+  // check for valid moves for all pieces of a given color
+  this.allValidMoves = function(color) {
+    var validMoves = [];
+
+    var matcher = new RegExp(color);
+
+    for (i = 0; i < 100; i++) {
+      if (matcher.test(this.position[i])) {
+        console.log("met");
+        validMoves.push(this.canMoveAny(i));
+        validMoves.push(this.canJumpAny(i));
+      }
+    }
+
+    return validMoves;
+  }
+
 
   // Now we define functions of state
   this.advanceTurn = function() {
