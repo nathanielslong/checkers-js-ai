@@ -1,0 +1,42 @@
+<html>
+  <head>
+    <title>Checkers AI</title>
+    <link href="https://fonts.googleapis.com/css?family=Aldrich" rel="stylesheet">
+    <link rel="stylesheet" href="assets/stylesheets/main.css">
+  </head>
+  <body>
+    <div class="container">
+      <div class="title">Checkers</div>
+      <div class="board">
+      </div>
+      <div class="control">
+        <!-- div.intial displays the starting controls -->
+        <div class="initial">
+          <div class="difficulty">
+            <h1 class="title">Choose your difficulty!</h1>
+            <span class="level not-selected" id="random">Random</span>
+            <span class="level not-selected" id="novice">Novice</span>
+            <span class="level not-selected" id="optimal">Optimal!</span>
+          </div>
+
+          <div class="start">Start</div>
+        </div>
+
+        <!-- div.ingame displays in-game messages and controls -->
+        <div class="ingame" id="human">Make a move!</div>
+        <div class="ingame" id="ai">
+          <img src="imgs/robot.png" id="robot" class="robot" />
+          <p>Wait for the computer to play!</p>
+        </div>
+        <div class="ingame" id="won">You won !</div>
+        <div class="ingame" id="lost">You lost !</div>
+        <div class="ingame" id="draw">It's a Draw</div>
+      </div>
+      <div class="messages"></div>
+    </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="assets/javascript/build.js"></script>
+    <script src="assets/javascript/board.js"></script>
+  </body>
+</html>

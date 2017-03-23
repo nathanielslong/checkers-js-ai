@@ -1,0 +1,97 @@
+.container {
+  height: 100%;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.board {
+  height: 500px;
+  width: 500px;
+  margin: 0 auto;
+}
+
+.cell {
+  font-size: 1em;
+  vertical-align: baseline;
+  text-align: center;
+}
+
+.even {
+  height: 45px;
+  width: 45px;
+  display: inline-block;
+  border: 1px black solid;
+  background-color: #FF6A00;
+  color: #FF6A00;
+}
+
+.odd {
+  height: 45px;
+  width: 45px;
+  display: inline-block;
+  border: 1px black solid;
+  background-color: #AA4600;
+}
+
+.title {
+  font-family: "Aldrich", sans-serif;
+  font-size: 40px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 40px;
+}
+
+.control, .messages {
+  font-family: "Aldrich", sans-serif;
+  font-size: 40px;
+  cursor: pointer;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 40px;
+}
+
+.start {
+  margin-top: 20px;
+  width: 120px;
+  height: 100px;
+  background-color: #000;
+  line-height: 100px;
+  text-align: center;
+  color: white;
+  margin-left: auto;
+  margin-right: auto;
+  cursor: pointer;
+  opacity: 0.5;
+  display: none;
+}
+
+.level {
+  margin: 0 15px;
+  color: black;
+  cursor: pointer;
+}
+
+.not-selected {
+  opacity: 0.5;
+}
+
+.not-selected:hover {
+  opacity: 1;
+}
+
+.ingame {
+  display: none;
+  color: black;
+}
+
+.ingame > p {
+  margin: 0px;
+}
+
+.robot {
+  opacity: 0.5;
+}
+
+.start:hover {
+  opacity: 1;
+}
