@@ -184,6 +184,10 @@ var Game = function(autoPlayer) {
     }
   }
 
+  // Checks for movable spots
+  this.canMoveTo = function(index) {
+  }
+
   // This next function advances the game ahead one state
   this.advanceTo = function(_state) {
     this.currentState = _state;
@@ -223,28 +227,5 @@ var Game = function(autoPlayer) {
       this.status = "running";
     }
   }
+  // Make score function for checkers
 }
-
-// // Make score function for checkers
-// $(document).ready(function() {
-//   var initialBoard = ['E','B','E','B','E','B','E','B','E','B',
-//                       'B','E','B','E','B','E','B','E','B','E',
-//                       'E','B','E','B','E','B','E','B','E','B',
-//                       'B','E','B','E','B','E','B','E','B','E',
-//                       'E','E','E','E','E','E','E','E','E','E',
-//                       'E','E','E','E','E','E','E','E','E','E',
-//                       'E','W','E','W','E','W','E','W','E','W',
-//                       'W','E','W','E','W','E','W','E','W','E',
-//                       'E','W','E','W','E','W','E','W','E','W',
-//                       'W','E','W','E','W','E','W','E','W','E'];
-
-//     var loadBoard = $('.board div');
-
-//     updateBoard(loadBoard, initialBoard);
-// })
-
-// function updateBoard(oldBoard, newBoard) {
-//   for (i = 0; i < 100; i++) {
-//     $(oldBoard[i]).html(newBoard[i]);
-//   }
-// }
