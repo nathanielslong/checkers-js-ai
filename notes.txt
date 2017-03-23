@@ -1,3 +1,5 @@
+see if can dry up valid jump/valid move things, since they have similar pattern
+
 add valid move checker to aid terminal conditions
 
 legalMoves(piece) function needed

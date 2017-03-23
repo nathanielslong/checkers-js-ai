@@ -192,10 +192,123 @@ var State = function(old) {
         }
       }
     }
+    return jumpSpaces;
   }
 
-  // Checks for movable spots
-  this.canMoveTo = function(index) {
+  // checks if a given piece has any valid moves
+  this.canMoveAny = function(index) {
+    var moveSpaces = [];
+    // if white, white conditions
+    if (/W/.test(this.position(index))) {
+      // if left wall
+      if (index % 10 == 0) {
+        if (this.canMoveUpperRight(index)) {
+          MoveSpaces.push(index - 9);
+        }
+        if (this.isKing(index)) {
+          if (this.canMoveLowerRight(index)) {
+            moveSpaces.push(index + 11);
+          }
+        }
+        //if right wall
+      } else if (index % 9 == 0) {
+        if (this.canMoveUpperLeft(index)) {
+          moveSpaces.push(index - 11);
+        }
+        if (this.isKing(index)) {
+          if (this.canMoveLowerLeft(index)) {
+            moveSpaces.push(index + 9);
+          }
+        }
+        // everywhere else
+      } else {
+        if (!this.isKing(index) || (this.isKing(index) && index > 90)){
+          if (this.canMoveUpperRight(index)) {
+            moveSpaces.push(index - 9);
+          }
+          if (this.canMoveUpperLeft(index)) {
+            moveSpaces.push(index - 11);
+          }
+        }
+        if (this.isKing(index) && index > 10 && index < 90 ) {
+          if (this.canMoveUpperRight(index)) {
+            moveSpaces.push(index - 9);
+          }
+          if (this.canMoveUpperLeft(index)) {
+            moveSpaces.push(index - 11);
+          }
+          if (this.canMoveLowerRight(index)) {
+            moveSpaces.push(index + 11);
+          }
+          if (this.canMoveLowerLeft(index)) {
+            moveSpaces.push(index + 9);
+          }
+        }
+        if (this.isKing(index) && index < 10) {
+          if (this.canMoveLowerRight(index)) {
+            moveSpaces.push(index + 11);
+          }
+          if (this.canMoveLowerLeft(index)) {
+            moveSpaces.push(index + 9);
+          }
+        }
+      }
+    } else { // black actions
+      // if left wall
+      if (index % 10 == 0) {
+        if (this.canMoveLowerRight(index)) {
+          moveSpaces.push(index + 11);
+        }
+        if (this.isKing(index)) {
+          if (this.canMoveUpperRight(index)) {
+            moveSpaces.push(index - 9);
+          }
+        }
+        //if right wall
+      } else if (index % 9 == 0) {
+        if (this.canMoveLowerLeft(index)) {
+          moveSpaces.push(index + 9);
+        }
+        if (this.isKing(index)) {
+          if (this.canMoveUpperLeft(index)) {
+            moveSpaces.push(index - 11);
+          }
+        }
+        // everywhere else
+      } else {
+        if (!this.isKing(index) || (this.isKing(index) && index > 90)){
+          if (this.canMoveUpperRight(index)) {
+            moveSpaces.push(index - 9);
+          }
+          if (this.canMoveUpperLeft(index)) {
+            moveSpaces.push(index - 11);
+          }
+        }
+        if (this.isKing(index) && index > 10 && index < 90 ) {
+          if (this.canMoveUpperRight(index)) {
+            moveSpaces.push(index - 9);
+          }
+          if (this.canMoveUpperLeft(index)) {
+            moveSpaces.push(index - 11);
+          }
+          if (this.canMoveLowerRight(index)) {
+            moveSpaces.push(index + 11);
+          }
+          if (this.canMoveLowerLeft(index)) {
+            moveSpaces.push(index + 9);
+          }
+        }
+        if (this.isKing(index) && index < 10) {
+          if (this.canMoveLowerRight(index)) {
+            moveSpaces.push(index + 11);
+          }
+          if (this.canMoveLowerLeft(index)) {
+            moveSpaces.push(index + 9);
+          }
+        }
+      }
+    }
+    return moveSpaces;
   }
 
   // Now we define functions of state
