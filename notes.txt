@@ -1,3 +1,31 @@
+TEST MOVE FUNCTION NOT WORKING
+
+Modulo 9 doesn't work
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 see if can dry up valid jump/valid move things, since they have similar pattern
 
 add valid move checker to aid terminal conditions
