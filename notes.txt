@@ -4,8 +4,6 @@ legalMoves(piece) function needed
 
 We'll add double jumps later
 
-pieces represented as an object seems correct
-
 Score function
 
 alright, lets think about move representation
@@ -26,6 +24,7 @@ Not king white pieces can only move to indexes less than itself
 
 okay, this one is interesting. how do we do diagonals?
 its not too bad in general. It's always add same index. unless piece is against a wall
+
 position empty  means position to be moved to. This pseudocode is a bit backwards, but we'll fix that when we write the actual code
 
 So left side case: if index % 10 = 0:

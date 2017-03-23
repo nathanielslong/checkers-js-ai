@@ -1,3 +1,6 @@
+// start a variable to hold the current board
+var initialBoard = ['E','B','E','B','E','B','E','B','E','B','B','E','B','E','B','E','B','E','B','E','E','B','E','B','E','B','E','B','E','B','B','E','B','E','B','E','B','E','B','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','W','E','W','E','W','E','W','E','W','W','E','W','E','W','E','W','E','W','E','E','W','E','W','E','W','E','W','E','W','W','E','W','E','W','E','W','E','W','E'];
+
 // State is initialized with the old state of the game, in order to have a reference to advance the game.
 var State = function(old) {
   // Sets whose turn it is (human or ai)
@@ -78,37 +81,6 @@ var State = function(old) {
   }
 }
 
-// Piece object. Keep track of individual pieces
-
-var Piece = function(color, element, position) {
-  // Sets DOM element of the piece
-  this.element = element;
-
-  // Sets initial position of the piece, index in the board array
-  this.position = position;
-
-  // keeps track of whether piece has been promoted
-  this.king = false;
-
-  this.makeKing = function() {
-    this.king = true;
-  }
-
-  this.color = color;
-
-  // function checks if piece can jump any pieces: returns boolean
-  this.canJumpAny = function() {
-    if (this.color == "white") {
-      if (!this.king) {
-        if (this.position % 10 == 0) {
-        }
-      } else {
-      }
-    } else {
-    }
-  }
-}
-
 // This function defines the game itself. this contains the information of what sort of AI player, current game state, and whether the game is still running. It also controls moving the game to different states and a way to start the game.
 var Game = function(autoPlayer) {
   this.ai = autoPlayer;
@@ -117,11 +89,100 @@ var Game = function(autoPlayer) {
   this.currentState = new State();
 
   // Inital board state
-  this.currentState.board = ['E','B','E','B','E','B','E','B','E','B','B','E','B','E','B','E','B','E','B','E','E','B','E','B','E','B','E','B','E','B','B','E','B','E','B','E','B','E','B','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','W','E','W','E','W','E','W','E','W','W','E','W','E','W','E','W','E','W','E','E','W','E','W','E','W','E','W','E','W','W','E','W','E','W','E','W','E','W','E']
+  this.currentState.board = initialBoard;
 
   this.currentState.turn = "white";
 
   this.status = "beginning";
+
+  this.position = function(index) {
+    return this.currentState.board[index];
+  }
+
+  // set movement functions for each direction, check if empty space. Boolean functions
+  this.canMoveLowerLeft = function(index) {
+    this.position(index + 9) == "E";
+  }
+
+  this.canMoveLowerRight = function(index) {
+    this.position(index + 11) == "E";
+  }
+
+  this.canMoveUpperLeft = function(index) {
+    this.position(index - 11) == "E";
+  }
+
+  this.canMoveUpperRight = function(index) {
+    this.position(index - 9) == "E";
+  }
+
+  //make jump checker functions, Boolean
+  this.canJumpLowerLeft = function(index) {
+    var oppColor = this.position(index) == "W" ? "B" : "W";
+    this.position[index + 9] == oppColor && this.position[index + 18] == "E";
+  }
+
+  this.canJumpLowerRight = function(index) {
+    var oppColor = this.position(index) == "W" ? "B" : "W";
+    this.position[index + 11] == oppColor && this.position[index + 22] == "E";
+  }
+
+  this.canJumpUpperLeft = function(index) {
+    var oppColor = this.position(index) == "W" ? "B" : "W";
+    this.position[index - 11] == oppColor && this.position[index - 22] == "E";
+  }
+
+  this.canJumpUpperRight = function(index) {
+    var oppColor = this.position(index) == "W" ? "B" : "W";
+    this.position[index - 9] == oppColor && this.position[index - 18] == "E";
+  }
+
+  // checks if a given piece has any jumps (currently only single jumps)
+  this.canJumpAny = function(index) {
+    var jumpSpaces = [];
+    // if white, white conditions
+    if (/W/.test(this.position(index))) {
+      // if left wall
+      if (index % 10 == 0) {
+        if (this.canJumpUpperRight(index)) {
+          jumpSpaces.push(index - 18);
+        }
+        //if right wall
+      } else if (index % 9 == 0) {
+        if (this.canJumpUpperLeft(index)) {
+          jumpSpaces.push(index - 22);
+        }
+        // everywhere else
+      } else {
+        if (this.canJumpUpperRight(index)) {
+          jumpSpaces.push(index - 18);
+        }
+        if (this.canJumpUpperLeft(index)) {
+          jumpSpaces.push(index - 22);
+        }
+      }
+    } else { // black actions
+      // if left wall
+      if (index % 10 == 0) {
+        if (this.canJumpLowerRight(index)) {
+          jumpSpaces.push(index + 22);
+        }
+        //if right wall
+      } else if (index % 9 == 0) {
+        if (this.canJumpLowerLeft(index)) {
+          jumpSpaces.push(index + 18);
+        }
+        // everywhere else
+      } else {
+        if (this.canJumpLowerRight(index)) {
+          jumpSpaces.push(index + 22);
+        }
+        if (this.canJumpLowerLeft(index)) {
+          jumpSpaces.push(index + 18);
+        }
+      }
+    }
+  }
 
   // This next function advances the game ahead one state
   this.advanceTo = function(_state) {
@@ -164,26 +225,26 @@ var Game = function(autoPlayer) {
   }
 }
 
-// Make score function for checkers
-$(document).ready(function() {
-  var initialBoard = ['E','B','E','B','E','B','E','B','E','B',
-                      'B','E','B','E','B','E','B','E','B','E',
-                      'E','B','E','B','E','B','E','B','E','B',
-                      'B','E','B','E','B','E','B','E','B','E',
-                      'E','E','E','E','E','E','E','E','E','E',
-                      'E','E','E','E','E','E','E','E','E','E',
-                      'E','W','E','W','E','W','E','W','E','W',
-                      'W','E','W','E','W','E','W','E','W','E',
-                      'E','W','E','W','E','W','E','W','E','W',
-                      'W','E','W','E','W','E','W','E','W','E'];
+// // Make score function for checkers
+// $(document).ready(function() {
+//   var initialBoard = ['E','B','E','B','E','B','E','B','E','B',
+//                       'B','E','B','E','B','E','B','E','B','E',
+//                       'E','B','E','B','E','B','E','B','E','B',
+//                       'B','E','B','E','B','E','B','E','B','E',
+//                       'E','E','E','E','E','E','E','E','E','E',
+//                       'E','E','E','E','E','E','E','E','E','E',
+//                       'E','W','E','W','E','W','E','W','E','W',
+//                       'W','E','W','E','W','E','W','E','W','E',
+//                       'E','W','E','W','E','W','E','W','E','W',
+//                       'W','E','W','E','W','E','W','E','W','E'];
 
-    var loadBoard = $('.board div');
+//     var loadBoard = $('.board div');
 
-    updateBoard(loadBoard, initialBoard);
-})
+//     updateBoard(loadBoard, initialBoard);
+// })
 
-function updateBoard(oldBoard, newBoard) {
-  for (i = 0; i < 100; i++) {
-    $(oldBoard[i]).html(newBoard[i]);
-  }
-}
+// function updateBoard(oldBoard, newBoard) {
+//   for (i = 0; i < 100; i++) {
+//     $(oldBoard[i]).html(newBoard[i]);
+//   }
+// }
