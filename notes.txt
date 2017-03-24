@@ -1,10 +1,12 @@
+in each action, fix the user action thing to play
+
 see if can dry up valid jump/valid move things, since they have similar pattern
 
 We'll add double jumps later
 
 Score function
 
-this.currentState.board = ['E','B','E','B','E','B','E','B','E','B',
+initial board  =          ['E','B','E','B','E','B','E','B','E','B',
                            'B','E','B','E','B','E','B','E','B','E',
                            'E','B','E','B','E','B','E','B','E','B',
                            'B','E','B','E','B','E','B','E','B','E',
@@ -15,3 +17,30 @@ this.currentState.board = ['E','B','E','B','E','B','E','B','E','B',
                            'E','W','E','W','E','W','E','W','E','W',
                            'W','E','W','E','W','E','W','E','W','E']
 
+single line version = ['E','B','E','B','E','B','E','B','E','B','B','E','B','E','B','E','B','E','B','E','E','B','E','B','E','B','E','B','E','B','B','E','B','E','B','E','B','E','B','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','W','E','W','E','W','E','W','E','W','W','E','W','E','W','E','W','E','W','E','E','W','E','W','E','W','E','W','E','W','W','E','W','E','W','E','W','E','W','E']
+
+board with a jump =       ['E','B','E','B','E','B','E','B','E','B',
+                           'B','E','B','E','B','E','B','E','B','E',
+                           'E','B','E','B','E','B','E','B','E','B',
+                           'E','E','B','E','B','E','B','E','B','E',
+                           'E','B','E','E','E','E','E','E','E','E',
+                           'E','E','W','E','E','E','E','E','E','E',
+                           'E','E','E','W','E','W','E','W','E','W',
+                           'W','E','W','E','W','E','W','E','W','E',
+                           'E','W','E','W','E','W','E','W','E','W',
+                           'W','E','W','E','W','E','W','E','W','E']
+
+single line version = ['E','B','E','B','E','B','E','B','E','B','B','E','B','E','B','E','B','E','B','E','E','B','E','B','E','B','E','B','E','B','E','E','B','E','B','E','B','E','B','E','E','B','E','E','E','E','E','E','E','E','E','E','W','E','E','E','E','E','E','E','E','E','E','W','E','W','E','W','E','W','W','E','W','E','W','E','W','E','W','E','E','W','E','W','E','W','E','W','E','W','W','E','W','E','W','E','W','E','W','E']
+
+board with two jumps =    ['E','B','E','B','E','B','E','B','E','B',
+                           'B','E','B','E','B','E','B','E','B','E',
+                           'E','B','E','B','E','B','E','B','E','B',
+                           'E','E','B','E','B','E','B','E','B','E',
+                           'E','B','E','E','E','E','E','E','E','E',
+                           'E','E','W','E','E','E','E','E','E','E',
+                           'E','E','E','W','E','W','E','W','E','W',
+                           'W','E','W','E','W','E','W','E','W','E',
+                           'E','W','E','W','E','W','E','W','E','W',
+                           'W','E','W','E','W','E','W','E','W','E']
+
+single line version = ['E','B','E','B','E','B','E','B','E','B','B','E','B','E','B','E','B','E','B','E','E','B','E','B','E','B','E','B','E','B','E','E','B','E','B','E','B','E','B','E','E','B','E','E','E','E','E','E','E','E','E','E','W','E','E','E','E','E','E','E','E','E','E','W','E','W','E','W','E','W','W','E','W','E','W','E','W','E','W','E','E','W','E','W','E','W','E','W','E','W','W','E','W','E','W','E','W','E','W','E']

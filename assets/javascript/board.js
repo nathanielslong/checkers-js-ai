@@ -66,19 +66,19 @@ var State = function(old) {
 
   //make jump checker functions, Boolean
   this.canJumpLowerLeft = function(index) {
-    return this.position[index + 9] == this.oppColor(index) && this.position[index + 18] == "E";
+    return this.position(index + 9) == this.oppColor(index) && this.position(index + 18) == "E";
   }
 
   this.canJumpLowerRight = function(index) {
-    return this.position[index + 11] == this.oppColor(index) && this.position[index + 22] == "E";
+    return this.position(index + 11) == this.oppColor(index) && this.position(index + 22) == "E";
   }
 
   this.canJumpUpperLeft = function(index) {
-    return this.position[index - 11] == this.oppColor(index) && this.position[index - 22] == "E";
+    return this.position(index - 11) == this.oppColor(index) && this.position(index - 22) == "E";
   }
 
   this.canJumpUpperRight = function(index) {
-    return this.position[index - 9] == this.oppColor(index) && this.position[index - 18] == "E";
+    return this.position(index - 9) == this.oppColor(index) && this.position(index - 18) == "E";
   }
 
   // checks if a given piece has any jumps (currently only single jumps)
@@ -206,7 +206,7 @@ var State = function(old) {
         // if left wall
         if (index % 10 == 0) {
           if (this.canMoveUpperRight(index)) {
-            MoveSpaces.push(index - 9);
+            moveSpaces.push(index - 9);
           }
           if (this.isKing(index)) {
             if (this.canMoveLowerRight(index)) {
@@ -316,20 +316,40 @@ var State = function(old) {
     }
   }
 
-  // check for valid moves for all pieces of a given color
+  // checks the number of jumps for a given piece.number is a variable to keep track through recursion how many jumps. if multiplepaths, return array of numbers
+  this.numberOfJumps = function(index, number) {
+    if (this.canJumpAny(index).length > 1) {
+      var numJumpArray = [];
+      this.canJumpAny(index).map(function(pos) {
+        numJumpArray.push(this.numberOfJumps(pos, number + 1));
+      })
+      return numJumpArray;
+    } else if (this.canJumpAny(index).length == 1) {
+      return numberOfJumps(this.canJumpAny(index)[0], number + 1);
+    } else {
+      return 0;
+    }
+  }
+
+  // check for valid moves for all pieces of a given color. if jumps are available, they are they only valid moves
   this.allValidMoves = function(color) {
     var validMoves = [];
+    var validJumps = [];
 
     matcher = new RegExp(color);
 
     for (i = 0; i < 100; i++) {
       if (matcher.test(this.position(i))) {
         if (this.canMoveAny(i).length > 0) {validMoves.push(this.canMoveAny(i))};
-        if (this.canJumpAny(i).length > 0) {validMoves.push(this.canJumpAny(i))};
+        if (this.canJumpAny(i).length > 0) {validJumps.push(this.canJumpAny(i))};
       }
     }
-
-    return validMoves;
+    // if there are any jumps, they are the only valid moves. else, return other moves.
+    if (validJumps.length > 0) {
+      return validJumps;
+    } else {
+      return validMoves;
+    }
   }
 
   this.checkForKings = function() {
@@ -347,7 +367,7 @@ var State = function(old) {
   }
   // Now we define functions of state
   this.advanceTurn = function() {
-    this.turn = this.turn == "white" ? "black" : "white";
+    this.turn = this.turn == "W" ? "B" : "W";
   }
 
   // IsTerminal checks if the current state is a terminal state by checking each possible win condition and draw condition. Returns true if terminal, false if not.
@@ -394,7 +414,7 @@ var Game = function(autoPlayer) {
   // Inital board state
   this.currentState.board = initialBoard;
 
-  this.currentState.turn = "white";
+  this.currentState.turn = "W";
 
   this.status = "beginning";
 
@@ -421,12 +441,12 @@ var Game = function(autoPlayer) {
       $('.messages').html("Play again?").fadeIn();
 
     } else { // Game is still running, so we switch players
-      if (this.currentState.turn == "White") {
+      if (this.currentState.turn == "W") {
         human.switchViewTo("human");
       } else {
         human.switchViewTo("robot");
 
-        this.ai.notify("Black");
+        this.ai.notify("B");
       }
     }
   }

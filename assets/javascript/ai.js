@@ -13,18 +13,18 @@ var AI = function(level) {
     } else {
       var stateScore;
 
-      if (state.turn == "X") {
-        // for X turn, we maximize score, so we initialize with a score lower than the function could reach
-        stateScore = -1000;
+      if (state.turn == "W") {
+        // for white turn, we maximize score, so we initialize with a score lower than the function could reach
+        stateScore = -100000;
       } else {
-        // for O turn, we minimize score, so we initialize with a score higher than the function could reach
-        stateScore = 1000;
+        // for black turn, we minimize score, so we initialize with a score higher than the function could reach
+        stateScore = 1000000;
       }
 
-      var availablePositions = state.emptyCells();
+      var availableMoves = state.validMoves(state.turn);
 
       // calculates available next states
-      var availableNextStates = availablePositions.map( function(pos) {
+      var availableNextStates = availableMoves.map( function(pos) {
         var action = new AIAction(pos);
 
         var nextState = action.applyTo(state);
@@ -36,13 +36,13 @@ var AI = function(level) {
       availableNextStates.forEach( function(nextState) {
         var nextScore = minimaxValue(nextState);
 
-        if (state.turn == "X") {
-          // maximize X
+        if (state.turn == "W") {
+          // maximize W
           if (nextScore > stateScore) {
             stateScore = nextScore;
           }
         } else {
-          // minimize O
+          // minimize B
           if (nextScore < stateScore) {
             stateScore = nextScore;
           }
@@ -52,10 +52,10 @@ var AI = function(level) {
     }
   }
 
-  // move functions based on a given level of intelligence. turn is the player to play, either x or o
+  // move functions based on a given level of intelligence. turn is the player to play, either white or black
   // ai chooses a random move
   function takeARandomMove(turn) {
-    var available = game.currentState.emptyCells();
+    var available = game.currentState.validMoves(currentState.turn);
     var randomCell = available[Math.floor(Math.random() * available.length)];
     var action = new AIAction(randomCell);
 
@@ -68,7 +68,7 @@ var AI = function(level) {
 
   // ai chooses the optimal move 40% of the time, suboptimal (2nd choice) 60%
   function takeANoviceMove(turn) {
-    var available = game.currentState.emptyCells();
+    var available = game.currentState.validMoves(currentState.turn);
 
     // calculate score for each possible action
     var availableActions = available.map(function(pos) {
@@ -82,11 +82,11 @@ var AI = function(level) {
       return action;
     })
 
-    if (turn == "X") {
-      // x maximizes
+    if (turn == "W") {
+      // white maximizes
       availableActions.sort(AIAction.DESCENDING);
     } else {
-      // o minimizes
+      // black minimizes
       availableActions.sort(AIAction.ASCENDING);
     }
 
@@ -110,7 +110,7 @@ var AI = function(level) {
 
   // ai chooses the optimal move
   function takeAOptimalMove(turn) {
-    var available = game.currentState.emptyCells();
+    var available = game.currentState.validMoves(currentState.turn);
 
     // calculate score for each possible action
     var availableActions = available.map(function(pos) {
@@ -124,11 +124,11 @@ var AI = function(level) {
       return action;
     })
 
-    if (turn == "X") {
-      // x maximizes
+    if (turn == "W") {
+      // white maximizes
       availableActions.sort(AIAction.DESCENDING);
     } else {
-      // o minimizes
+      // black minimizes
       availableActions.sort(AIAction.ASCENDING);
     }
 
@@ -166,19 +166,32 @@ var AI = function(level) {
 
 // The next function represents the actions of the AI, taken into its own class for modularity. It has two main roles: remembering where on the board a play is, and the minimax value calculated.
 
-var AIAction = function(pos) {
+var AIAction = function(pos1, pos2) {
   // specify defaults
-  this.movePosition = pos;
+  this.initialPosition = pos1;
+  this.movePosition = pos2;
+
+  //returns true if difference in position is enough for a jump
+  this.isJump = function(initialPosition, movePosition) {
+    return Math.abs(initialPosition - movePosition) > 11;
+  }
+
   this.minimaxValue = 0;
 
   // Applies an action to the board to advance to the next state
   this.applyTo = function(state) {
     var next = new State(state);
 
-    next.board[this.movePosition] = state.turn;
+    next.board[initialPosition] = 'E';
+    next.board[movePosition] = state.turn;
 
-    if (state.turn == "O") {
-      next.oMovesCount++;
+  //if move position is either end, mark king
+
+    if (this.isJump) {
+    }
+
+    if (state.turn == "B") {
+      next.blackMovesCount++;
     }
 
     next.advanceTurn();
