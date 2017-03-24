@@ -19,7 +19,7 @@ var State = function(old) {
 
   // This conditional is the object constructor. if old exists, the state is constructed given the parameters of the old state.
   if (typeof old !== "undefined") {
-    // the next 5 lines copy the previous board state to the current board
+    // the next lines copy the previous board state to the current board
     var len = old.board.length;
     this.board = new Array(len);
     for (var i = 0; i < len; i++) {
@@ -317,17 +317,36 @@ var State = function(old) {
   }
 
   // checks the number of jumps for a given piece.number is a variable to keep track through recursion how many jumps. if multiplepaths, return array of numbers
-  this.numberOfJumps = function(index, number) {
+  this.numberOfJumps = function(index, number, board = this.board) {
+    var currentBoard = board;
+    console.log(board)
+
     if (this.canJumpAny(index).length > 1) {
+      currentBoard[this.canJumpAny(index)[0]] = currentBoard[index];
+      currentBoard[(this.canJumpAny(index)[0] + index) / 2] = "E";
+      currentBoard[index] = "E";
+
       var numJumpArray = [];
+
       this.canJumpAny(index).map(function(pos) {
-        numJumpArray.push(this.numberOfJumps(pos, number + 1));
+        numJumpArray.push(this.numberOfJumps(pos, number + 1, currentBoard));
       })
+
       return numJumpArray;
+
     } else if (this.canJumpAny(index).length == 1) {
-      return numberOfJumps(this.canJumpAny(index)[0], number + 1);
+      var pos1 = index;
+      var pos2 = this.canJumpAny(index)[0];
+      var pos3 = (this.canJumpAny(index)[0] + index) / 2;
+
+      currentBoard[pos2] = currentBoard[pos1];
+      currentBoard[pos1] = "E";
+      currentBoard[pos3] = "E";
+
+      return this.numberOfJumps(pos2, number + 1, currentBoard);
     } else {
-      return 0;
+      console.log("else")
+      return number;
     }
   }
 
