@@ -1,3 +1,5 @@
+in each action, fix the user action thing to play
+
 see if can dry up valid jump/valid move things, since they have similar pattern
 
 We'll add double jumps later
