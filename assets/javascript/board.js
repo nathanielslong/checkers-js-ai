@@ -84,7 +84,6 @@ var State = function(old) {
     var jumpSpaces = [];
     // if white, white conditions
     if (/W/.test(this.position(index))) {
-      console.log("white");
       // if left wall
       if (index % 10 == 0) {
         if (this.canJumpUpperRight(index)) {
@@ -161,12 +160,12 @@ var State = function(old) {
         }
         // everywhere else
       } else {
-        if (!this.isKing(index) || (this.isKing(index) && index > 90)){
-          if (this.canJumpUpperRight(index)) {
-            jumpSpaces.push(index - 18);
+        if (!this.isKing(index) || (this.isKing(index) && index < 10)){
+          if (this.canJumpLowerRight(index)) {
+            jumpSpaces.push(index + 22);
           }
-          if (this.canJumpUpperLeft(index)) {
-            jumpSpaces.push(index - 22);
+          if (this.canJumpLowerLeft(index)) {
+            jumpSpaces.push(index + 18);
           }
         }
         if (this.isKing(index) && index > 10 && index < 90 ) {
@@ -183,7 +182,7 @@ var State = function(old) {
             jumpSpaces.push(index + 18);
           }
         }
-        if (this.isKing(index) && index < 10) {
+        if (this.isKing(index) && index > 89) {
           if (this.canJumpLowerRight(index)) {
             jumpSpaces.push(index + 22);
           }
@@ -224,7 +223,7 @@ var State = function(old) {
           }
           // everywhere else
         } else {
-          if (!this.isKing(index) || (this.isKing(index) && index > 90)){
+          if (!this.isKing(index) || (this.isKing(index) && index > 89)){
             if (this.canMoveUpperRight(index)) {
               moveSpaces.push(index - 9);
             }
@@ -278,7 +277,7 @@ var State = function(old) {
           }
           // everywhere else
         } else {
-          if (!this.isKing(index) || (this.isKing(index) && index > 90)){
+          if (!this.isKing(index) || (this.isKing(index) && index < 10)){
             if (this.canMoveLowerRight(index)) {
               moveSpaces.push(index + 11);
             }
@@ -300,7 +299,7 @@ var State = function(old) {
               moveSpaces.push(index + 9);
             }
           }
-          if (this.isKing(index) && index < 10) {
+          if (this.isKing(index) && index > 89) {
             if (this.canMoveLowerRight(index)) {
               moveSpaces.push(index + 11);
             }
@@ -319,20 +318,31 @@ var State = function(old) {
   this.allValidMoves = function(color) {
     var validMoves = [];
 
-    var matcher = new RegExp(color);
+    matcher = new RegExp(color);
 
     for (i = 0; i < 100; i++) {
-      if (matcher.test(this.position[i])) {
-        console.log("met");
-        validMoves.push(this.canMoveAny(i));
-        validMoves.push(this.canJumpAny(i));
+      if (matcher.test(this.position(i))) {
+        if (this.canMoveAny(i).length > 0) {validMoves.push(this.canMoveAny(i))};
+        if (this.canJumpAny(i).length > 0) {validMoves.push(this.canJumpAny(i))};
       }
     }
 
     return validMoves;
   }
 
+  this.checkForKings = function() {
+    var whiteKings = [];
+    var blackKings = [];
 
+    for (i = 0; i < 100; i++) {
+      if (this.isKing(i) && /W/.test(this.position(i))) {
+        whiteKings.push(i);
+      } else if (this.isKing(i) && /B/.test(this.position(i))) {
+        blackKings.push(i);
+      }
+    }
+    return [whiteKings, blackKings];
+  }
   // Now we define functions of state
   this.advanceTurn = function() {
     this.turn = this.turn == "white" ? "black" : "white";
@@ -353,17 +363,17 @@ var State = function(old) {
       return true;
 
       //Check if white has run out of moves
-    } else if (/*white has no valid moves*/false) {
+    } else if (this.allValidMoves("W").length == 0) {
       this.result = "Black won";
       return true;
 
       //Check if black has run out of moves
-    } else if (/*black has no valid moves*/false) {
+    } else if (this.allValidMoves("B").length == 0) {
       this.result = "White won";
       return true;
 
       //Then check draw conditions
-    } else if (/*players only have one king each*/false) {
+    } else if (this.checkForKings[0].length == 1 && this.checkForKings[1].length == 1) {
       this.result = "draw";
       return true;
     } else {
