@@ -199,7 +199,6 @@ var State = function(old) {
   // checks if a given piece has any valid moves
   this.canMoveAny = function(index) {
     if (this.position(index) !== "E") {
-      console.log("not an e");
       var moveSpaces = [];
       // if white, white conditions
       if (/W/.test(this.position(index))) {
@@ -214,7 +213,7 @@ var State = function(old) {
             }
           }
           //if right wall
-        } else if (index % 9 == 0) {
+        } else if ((index - 9) % 10 == 0) {
           if (this.canMoveUpperLeft(index)) {
             moveSpaces.push(index - 11);
           }
@@ -268,7 +267,7 @@ var State = function(old) {
             }
           }
           //if right wall
-        } else if (index % 9 == 0) {
+        } else if ((index - 9) % 10 == 0) {
           if (this.canMoveLowerLeft(index)) {
             moveSpaces.push(index + 9);
           }
@@ -280,11 +279,11 @@ var State = function(old) {
           // everywhere else
         } else {
           if (!this.isKing(index) || (this.isKing(index) && index > 90)){
-            if (this.canMoveUpperRight(index)) {
-              moveSpaces.push(index - 9);
+            if (this.canMoveLowerRight(index)) {
+              moveSpaces.push(index + 11);
             }
-            if (this.canMoveUpperLeft(index)) {
-              moveSpaces.push(index - 11);
+            if (this.canMoveLowerLeft(index)) {
+              moveSpaces.push(index + 9);
             }
           }
           if (this.isKing(index) && index > 10 && index < 90 ) {
