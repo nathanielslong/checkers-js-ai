@@ -27,6 +27,8 @@ var State = function(old) {
     }
 
     this.blackMovesCount = old.blackMovesCount;
+    this.capBlackPieces = old.capBlackPieces;
+    this.capWhitePieces = old.capWhitePieces;
     this.result = old.result;
     this.turn = old.turn;
   }
@@ -353,12 +355,12 @@ var State = function(old) {
     // First, check win conditions
 
     //Check if black has run out of pieces
-    if (capBlackPieces == 20) {
+    if (this.capBlackPieces == 20) {
       this.result = "White won";
       return true;
 
       //Check if white has run out of pieces
-    } else if (capWhitePieces == 20) {
+    } else if (this.capWhitePieces == 20) {
       this.result = "Black won";
       return true;
 
@@ -373,7 +375,7 @@ var State = function(old) {
       return true;
 
       //Then check draw conditions
-    } else if (this.checkForKings[0].length == 1 && this.checkForKings[1].length == 1) {
+    } else if (this.checkForKings()[0].length == 1 && this.checkForKings()[1].length == 1) {
       this.result = "draw";
       return true;
     } else {
