@@ -316,6 +316,11 @@ var State = function(old) {
     }
   }
 
+  // checks the number of jumps for a given piece.number is a variable to keep track through recursion how many jumps
+  this.numberOfJumps = function(index, number) {
+    if (this.canJumpAny(index))
+  }
+
   // check for valid moves for all pieces of a given color. if jumps are available, they are they only valid moves
   this.allValidMoves = function(color) {
     var validMoves = [];

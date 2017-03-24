@@ -185,6 +185,8 @@ var AIAction = function(pos1, pos2) {
     next.board[initialPosition] = 'E';
     next.board[movePosition] = state.turn;
 
+  //if move position is either end, mark king
+
     if (this.isJump) {
     }
 
