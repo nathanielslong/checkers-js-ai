@@ -357,22 +357,35 @@ var State = function(old) {
 
     matcher = new RegExp(color);
 
+    // refactor to check jumps first, to save computational time
     for (i = 0; i < 100; i++) {
       if (matcher.test(this.position(i))) {
         var moves = this.canMoveAny(i);
         var jumps = this.canJumpAny(i);
         if (moves.length > 0) {
-          for (i = 0; i < moves.length; i++) {
-            if (moves[i].length > 1) {
+          for (j = 0; j < moves.length; j++) {
+            if (moves[j].length > 1) {
               // get them all as individual pairs
+              for (k = 0; k < moves[j].length; k++) {
+                validMoves.push([i],moves[j][k]);
+              }
             }
           } else {
-            validMoves.push([i,moves[i]]);
+            validMoves.push([i,moves[j]]);
           }
         }
         // this will be copied as above
         if (jumps.length > 0) {
-          validJumps.push([i,this.canJumpAny(i)])
+          for (j = 0; j < jumps.length; j++) {
+            if (jumps[j].length > 1) {
+              // get them all as individual pairs
+              for (k = 0; k < jumps[j].length; k++) {
+                validMoves.push([i],jumps[j][k]);
+              }
+            }
+          } else {
+            validMoves.push([i,jumps[j]]);
+          }
         }
       }
     }
