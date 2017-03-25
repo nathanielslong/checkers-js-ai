@@ -24,13 +24,13 @@ var AI = function(level) {
       var availableMoves = state.validMoves(state.turn);
 
       // calculates available next states
-      var availableNextStates = availableMoves.map( function(pos) {
-        var action = new AIAction(pos);
+      for (i = 0; i < availableMoves.length; i++) {
+        var action = new AIAction(availableMoves[i][0], availableMoves[i][1]);
 
         var nextState = action.applyTo(state);
 
         return nextState;
-      })
+      }
 
       // gets minimax value for all the available next states
       availableNextStates.forEach( function(nextState) {
@@ -54,10 +54,11 @@ var AI = function(level) {
 
   // move functions based on a given level of intelligence. turn is the player to play, either white or black
   // ai chooses a random move
+  // rewrite for two positions
   function takeARandomMove(turn) {
     var available = game.currentState.validMoves(currentState.turn);
-    var randomCell = available[Math.floor(Math.random() * available.length)];
-    var action = new AIAction(randomCell);
+    var randomCell = available[0][Math.floor(Math.random() * available.length)];
+    var action = new AIAction(randomCell[0],randomCell[1]);
 
     var next = action.applyTo(game.currentState);
 
@@ -71,8 +72,8 @@ var AI = function(level) {
     var available = game.currentState.validMoves(currentState.turn);
 
     // calculate score for each possible action
-    var availableActions = available.map(function(pos) {
-      var action = new AIAction(pos);
+    for (i = 0; i < available.length; i++) {
+      var action = new AIAction(available[i][0], available[i][1]);
 
       // get next state
       var next = action.applyTo(game.currentState);
@@ -80,7 +81,7 @@ var AI = function(level) {
       action.minimaxVal = minimaxValue(next);
 
       return action;
-    })
+    }
 
     if (turn == "W") {
       // white maximizes
@@ -111,20 +112,20 @@ var AI = function(level) {
   // ai chooses the optimal move
   function takeAOptimalMove(turn) {
     var available = game.currentState.validMoves(currentState.turn);
+    var availableActions;
 
     // calculate score for each possible action
-    // rewrite for the all valid moves function as it is rewritten
-    for (i = 0; i < availble.length)
-    var availableActions = available.map(function(pos) {
-      var action = new AIAction(pos);
+    for (i = 0; i < available.length; i++) {
+
+      var action = new AIAction(available[i][0], available[i][1]);
 
       // get next state
       var next = action.applyTo(game.currentState);
 
       action.minimaxVal = minimaxValue(next);
 
-      return action;
-    })
+      availableAction.push(action);
+    }
 
     if (turn == "W") {
       // white maximizes
@@ -137,7 +138,7 @@ var AI = function(level) {
     var chosenAction = availableActions[0];
     var next = chosenAction.applyTo(game.currentState);
 
-    // puts x or o at chosen position on board
+    // RECHECK WHEN LOOKING AT HUMAN
     human.insertAt(chosenAction.movePosition, turn);
 
     game.advanceTo(next);
@@ -187,9 +188,11 @@ var AIAction = function(pos1, pos2) {
     next.board[initialPosition] = 'E';
     next.board[movePosition] = state.turn;
 
-  //if move position is either end, mark king
+    //if move position is either end, mark king
 
-    if (this.isJump && state) {
+    // later add for more than one jump (valid moves only counts for single jumps right now anyway)
+    if (this.isJump) {
+      next.board[(movePosition + initialPosition) / 2] = "E";
     }
 
     if (state.turn == "B") {
