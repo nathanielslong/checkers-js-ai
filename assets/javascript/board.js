@@ -359,8 +359,21 @@ var State = function(old) {
 
     for (i = 0; i < 100; i++) {
       if (matcher.test(this.position(i))) {
-        if (this.canMoveAny(i).length > 0) {validMoves.push(this.canMoveAny(i))};
-        if (this.canJumpAny(i).length > 0) {validJumps.push(this.canJumpAny(i))};
+        var moves = this.canMoveAny(i);
+        var jumps = this.canJumpAny(i);
+        if (moves.length > 0) {
+          for (i = 0; i < moves.length; i++) {
+            if (moves[i].length > 1) {
+              // get them all as individual pairs
+            }
+          } else {
+            validMoves.push([i,moves[i]]);
+          }
+        }
+        // this will be copied as above
+        if (jumps.length > 0) {
+          validJumps.push([i,this.canJumpAny(i)])
+        }
       }
     }
     // if there are any jumps, they are the only valid moves. else, return other moves.

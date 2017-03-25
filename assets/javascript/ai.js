@@ -113,6 +113,8 @@ var AI = function(level) {
     var available = game.currentState.validMoves(currentState.turn);
 
     // calculate score for each possible action
+    // rewrite for the all valid moves function as it is rewritten
+    for (i = 0; i < availble.length)
     var availableActions = available.map(function(pos) {
       var action = new AIAction(pos);
 
@@ -187,7 +189,7 @@ var AIAction = function(pos1, pos2) {
 
   //if move position is either end, mark king
 
-    if (this.isJump) {
+    if (this.isJump && state) {
     }
 
     if (state.turn == "B") {
