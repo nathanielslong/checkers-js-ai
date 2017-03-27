@@ -452,7 +452,7 @@ var State = function(old) {
     return [whiteKings, blackKings];
   }
   // Now we define functions of state
-  this.advanceTurn = function() {
+   this.advanceTurn = function() {
     this.turn = this.turn == "W" ? "B" : "W";
   }
 

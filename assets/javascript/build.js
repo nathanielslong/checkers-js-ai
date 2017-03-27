@@ -1,7 +1,3 @@
-$(document).ready(function() {
-    buildBoard();
-})
-
 // in the div board, append divs so that 10 fit in each row
 function buildBoard() {
   for (i = 0; i < 100; i++) {
