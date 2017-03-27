@@ -62,18 +62,27 @@ $('.start').click(function() {
             $('.possibles').each(function() {
               var $this = $(this);
               $this.click(function() {
+                $('.possibles').removeClass('possibles');
+
+                var endPosition = parseInt($this.data('index'));
+                var next = new State(globals.game.currentState);
+
+                next.board[index] = "E";
+                next.board[endPosition] = "W";
+
+                if (endPosition - index > 11) {
+                  next.board[(endPosition + index) / 2] = "E";
+                  next.state.capBlackPieces++;
+                }
+
+                human.playMove(index, endPosition, "W");
+
+                next.advanceTurn();
+
+                globals.game.advanceTo(next);
               })
             })
           }
-
-          // var next = new State(globals.game.currentState);
-          // next.board[index] = "X";
-
-          // human.insertAt(index, "X");
-
-          // next.advanceTurn();
-
-          // globals.game.advanceTo(next);
         }
       })
     })

@@ -61,14 +61,14 @@ human.playMove = function(startPosition, finalPosition, symbol) {
   var startCell = $(board[startPosition]);
   var finalCell = $(board[finalPosition]);
 
-  if ($(startCell).val() == symbol && $(finalCell).val() == "E") {
+  if ($(startCell).html() == symbol && $(finalCell).html() == "E") {
     $(startCell).html("E");
     $(finalCell).html(symbol);
   }
 
   if (finalPosition - startPosition > 11) {
     var jumpCell = $(board[(finalPosition - startPosition) / 2]);
-    if ($(jumpCell).val() != symbol && $(jumpCell.val() != "E")) {
+    if ($(jumpCell).html() != symbol && $(jumpCell.html() != "E")) {
       $(jumpCell).html("E");
     }
   }
