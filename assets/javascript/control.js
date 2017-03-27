@@ -31,66 +31,55 @@ $('.start').click(function() {
     $('.title').fadeOut();
 
     populateBoard();
-
-    // put here since if not it won't work due to sequence of dom loading
-    $('.odd').each(function() {
-      var $this = $(this);
-      $this.click(function() {
-        if (globals.game.status == "running" && globals.game.currentState.turn == "W") {
-          var index = parseInt($this.data('index'));
-
-          var possibleMoves = globals.game.currentState.allValidMoves("W");
-          var startingLocations = possibleMoves.map(function(pair) {return pair[0]})
-
-          if (!startingLocations.includes(index)) {
-            $('.messages').hide().html("No valid moves, try another piece.").fadeIn().delay(1000).fadeOut();
-          } else {
-            var endingLocations = possibleMoves.map(function(x) {
-              if (x[0] == index) {
-                return x[1];
-              }
-            })
-            endingLocations = endingLocations.filter(function(x) {return x != undefined;});
-
-            var board = $('.cell');
-            $('.possibles').removeClass('possibles');
-
-            endingLocations.forEach(function(location) {
-              $(board[location]).addClass('possibles');
-            })
-
-            $('.possibles').each(function() {
-              var $this = $(this);
-              $this.click(function() {
-                $('.possibles').removeClass('possibles');
-
-                var endPosition = parseInt($this.data('index'));
-                var next = new State(globals.game.currentState);
-
-                next.board[index] = "E";
-                next.board[endPosition] = "W";
-
-                if (endPosition - index > 11) {
-                  next.board[(endPosition + index) / 2] = "E";
-                  next.state.capBlackPieces++;
-                }
-
-                human.playMove(index, endPosition, "W");
-
-                next.advanceTurn();
-
-                globals.game.advanceTo(next);
-              })
-            })
-          }
-        }
-      })
-    })
   }
 })
 
-// Allow restarting of the game
+// put here since if not it won't work due to sequence of dom loading
+$('.odd').each(function() {
+  var $this = $(this);
+  $this.click(function() {
+    if (globals.game.status == "running" && globals.game.currentState.turn == "W" && $this.html() == "W") {
+      var index = parseInt($this.data('index'));
 
+      var possibleMoves = globals.game.currentState.indexValidMoves(index)
+      var endingLocations = possibleMoves.map(function(x) {return x[1]})
+      endingLocations = endingLocations.filter(function(x) {return x != undefined});
+
+      var board = $('.cell');
+      $('.possibles').removeClass('possibles');
+
+      endingLocations.forEach(function(location) {
+        $(board[location]).addClass('possibles');
+      })
+
+      $('.possibles').each(function() {
+        var $thistoo = $(this);
+        $thistoo.click(function() {
+          $('.possibles').removeClass('possibles');
+
+          var endPosition = parseInt($thistoo.data('index'));
+          var next = new State(globals.game.currentState);
+
+          next.board[index] = "E";
+          next.board[endPosition] = "W";
+
+          if (Math.abs(endPosition - index) > 11) {
+            next.board[(endPosition + index) / 2] = "E";
+            next.state.capBlackPieces++;
+          }
+
+          human.playMove(index, endPosition, "W");
+
+          next.advanceTurn();
+
+          globals.game.advanceTo(next);
+        })
+      })
+    }
+  })
+})
+
+// Allow restarting of the game
 $('.messages').click(function() {
   if (globals.game.status == "ended") {
     var board = $('.cell');

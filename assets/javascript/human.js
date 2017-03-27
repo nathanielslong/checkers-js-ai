@@ -66,8 +66,9 @@ human.playMove = function(startPosition, finalPosition, symbol) {
     $(finalCell).html(symbol);
   }
 
-  if (finalPosition - startPosition > 11) {
-    var jumpCell = $(board[(finalPosition - startPosition) / 2]);
+  if (Math.abs(finalPosition - startPosition) > 11) {
+    var jumpCell = $(board[(finalPosition + startPosition) / 2]);
+    console.log($(jumpCell).html())
     if ($(jumpCell).html() != symbol && $(jumpCell.html() != "E")) {
       $(jumpCell).html("E");
     }
