@@ -56,13 +56,14 @@ var AI = function(level) {
   // ai chooses a random move
   // rewrite for two positions
   function takeARandomMove(turn) {
-    var available = game.currentState.validMoves(currentState.turn);
-    var randomCell = available[0][Math.floor(Math.random() * available.length)];
-    var action = new AIAction(randomCell[0],randomCell[1]);
+    var available = game.currentState.allValidMoves(game.currentState.turn);
+    var randomPosition = available[Math.floor(Math.random() * available.length)];
+    console.log(randomPosition);
+    var action = new AIAction(randomPosition[0],randomPosition[1]);
 
     var next = action.applyTo(game.currentState);
 
-    human.insertAt(randomCell, turn);
+    human.playMove(randomPosition[0], randomPosition[1], turn);
 
     game.advanceTo(next);
   }
@@ -184,14 +185,14 @@ var AIAction = function(pos1, pos2) {
   this.applyTo = function(state) {
     var next = new State(state);
 
-    next.board[initialPosition] = 'E';
-    next.board[movePosition] = state.turn;
+    next.board[this.initialPosition] = 'E';
+    next.board[this.movePosition] = state.turn;
 
     //if move position is either end, mark king
 
     // later add for more than one jump (valid moves only counts for single jumps right now anyway)
     if (this.isJump) {
-      next.board[(movePosition + initialPosition) / 2] = "E";
+      next.board[(this.movePosition + this.initialPosition) / 2] = "E";
     }
 
     if (state.turn == "B") {
