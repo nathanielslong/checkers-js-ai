@@ -1,3 +1,54 @@
+$(document).ready(function() {
+  buildBoard();
+  populateBoard();
+
+  // put here since if not it won't work due to sequence of dom loading
+  $('.odd').each(function() {
+    var $this = $(this);
+    $this.click(function() {
+      if (globals.game.status == "running" && globals.game.currentState.turn == "W" && $this.html() == "W") {
+        var index = parseInt($this.data('index'));
+
+        var possibleMoves = globals.game.currentState.indexValidMoves(index)
+        var endingLocations = possibleMoves.map(function(x) {return x[1]})
+        endingLocations = endingLocations.filter(function(x) {return x != undefined});
+
+        var board = $('.cell');
+        $('.possibles').removeClass('possibles');
+
+        endingLocations.forEach(function(location) {
+          $(board[location]).addClass('possibles');
+        })
+
+        $('.possibles').each(function() {
+          var $thistoo = $(this);
+          $thistoo.click(function() {
+            $('.possibles').removeClass('possibles');
+
+            var endPosition = parseInt($thistoo.data('index'));
+            var next = new State(globals.game.currentState);
+
+            next.board[index] = "E";
+            next.board[endPosition] = "W";
+
+            if (Math.abs(endPosition - index) > 11) {
+              next.board[(endPosition + index) / 2] = "E";
+              next.state.capBlackPieces++;
+            }
+
+            human.playMove(index, endPosition, "W");
+
+            next.advanceTurn();
+
+            globals.game.advanceTo(next);
+          })
+        })
+      }
+    })
+  })
+
+})
+
 // This deals with the user control on the site
 // set storage for variables in the site
 var globals = {};
@@ -29,54 +80,7 @@ $('.start').click(function() {
     globals.game.start();
 
     $('.title').fadeOut();
-
-    populateBoard();
   }
-})
-
-// put here since if not it won't work due to sequence of dom loading
-$('.odd').each(function() {
-  var $this = $(this);
-  $this.click(function() {
-    if (globals.game.status == "running" && globals.game.currentState.turn == "W" && $this.html() == "W") {
-      var index = parseInt($this.data('index'));
-
-      var possibleMoves = globals.game.currentState.indexValidMoves(index)
-      var endingLocations = possibleMoves.map(function(x) {return x[1]})
-      endingLocations = endingLocations.filter(function(x) {return x != undefined});
-
-      var board = $('.cell');
-      $('.possibles').removeClass('possibles');
-
-      endingLocations.forEach(function(location) {
-        $(board[location]).addClass('possibles');
-      })
-
-      $('.possibles').each(function() {
-        var $thistoo = $(this);
-        $thistoo.click(function() {
-          $('.possibles').removeClass('possibles');
-
-          var endPosition = parseInt($thistoo.data('index'));
-          var next = new State(globals.game.currentState);
-
-          next.board[index] = "E";
-          next.board[endPosition] = "W";
-
-          if (Math.abs(endPosition - index) > 11) {
-            next.board[(endPosition + index) / 2] = "E";
-            next.state.capBlackPieces++;
-          }
-
-          human.playMove(index, endPosition, "W");
-
-          next.advanceTurn();
-
-          globals.game.advanceTo(next);
-        })
-      })
-    }
-  })
 })
 
 // Allow restarting of the game
