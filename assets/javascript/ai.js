@@ -138,7 +138,6 @@ var AI = function(level) {
     var chosenAction = availableActions[0];
     var next = chosenAction.applyTo(game.currentState);
 
-    // RECHECK WHEN LOOKING AT HUMAN
     human.playMove(chosenAction.initialPosition, chosenAction.movePosition, turn);
 
     game.advanceTo(next);
