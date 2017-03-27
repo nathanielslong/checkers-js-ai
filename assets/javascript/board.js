@@ -319,7 +319,6 @@ var State = function(old) {
   // checks the number of jumps for a given piece.number is a variable to keep track through recursion how many jumps. if multiplepaths, return array of numbers
   this.numberOfJumps = function(index, number, board = this.board) {
     var currentBoard = board;
-    console.log(board)
 
     if (this.canJumpAny(index).length > 1) {
       currentBoard[this.canJumpAny(index)[0]] = currentBoard[index];
@@ -345,7 +344,6 @@ var State = function(old) {
 
       return this.numberOfJumps(pos2, number + 1, currentBoard);
     } else {
-      console.log("else")
       return number;
     }
   }
@@ -357,10 +355,37 @@ var State = function(old) {
 
     matcher = new RegExp(color);
 
+    // refactor to check jumps first, to save computational time
     for (i = 0; i < 100; i++) {
       if (matcher.test(this.position(i))) {
-        if (this.canMoveAny(i).length > 0) {validMoves.push(this.canMoveAny(i))};
-        if (this.canJumpAny(i).length > 0) {validJumps.push(this.canJumpAny(i))};
+        var moves = this.canMoveAny(i);
+        var jumps = this.canJumpAny(i);
+        if (moves.length > 0) {
+          for (j = 0; j < moves.length; j++) {
+            if (moves[j].length > 1) {
+              // get them all as individual pairs
+              for (k = 0; k < moves[j].length; k++) {
+                validMoves.push([i],moves[j][k]);
+              }
+            } else {
+              validMoves.push([i,moves[j]]);
+            }
+          }
+        }
+
+        // this will be copied as above
+        if (jumps.length > 0) {
+          for (j = 0; j < jumps.length; j++) {
+            if (jumps[j].length > 1) {
+              // get them all as individual pairs
+              for (k = 0; k < jumps[j].length; k++) {
+                validMoves.push([i],jumps[j][k]);
+              }
+            } else {
+              validMoves.push([i,jumps[j]]);
+            }
+          }
+        }
       }
     }
     // if there are any jumps, they are the only valid moves. else, return other moves.
