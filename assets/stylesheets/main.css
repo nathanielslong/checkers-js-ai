@@ -41,7 +41,16 @@
   margin-top: 40px;
 }
 
-.control, .messages {
+.control {
+  font-family: "Aldrich", sans-serif;
+  font-size: 40px;
+  cursor: pointer;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 40px;
+}
+
+.messages {
   font-family: "Aldrich", sans-serif;
   font-size: 40px;
   cursor: pointer;
@@ -71,7 +80,7 @@
   cursor: pointer;
 }
 
-.not-selected {
+.not-selected, .possibles {
   opacity: 0.5;
 }
 
@@ -95,3 +104,4 @@
 .start:hover {
   opacity: 1;
 }
+

@@ -396,6 +396,48 @@ var State = function(old) {
     }
   }
 
+  // check for valid moves for a given index. if jumps are available, they are they only valid moves
+  this.indexValidMoves = function(i) {
+    var validMoves = [];
+    var validJumps = [];
+
+    var moves = this.canMoveAny(i);
+    console.log(moves)
+    var jumps = this.canJumpAny(i);
+    if (moves.length > 0) {
+      for (j = 0; j < moves.length; j++) {
+        if (moves[j].length > 1) {
+          // get them all as individual pairs
+          for (k = 0; k < moves[j].length; k++) {
+            validMoves.push([i],moves[j][k]);
+          }
+        } else {
+          validMoves.push([i,moves[j]]);
+        }
+      }
+    }
+
+    // this will be copied as above
+    if (jumps.length > 0) {
+      for (j = 0; j < jumps.length; j++) {
+        if (jumps[j].length > 1) {
+          // get them all as individual pairs
+          for (k = 0; k < jumps[j].length; k++) {
+            validMoves.push([i],jumps[j][k]);
+          }
+        } else {
+          validMoves.push([i,jumps[j]]);
+        }
+      }
+    }
+    // if there are any jumps, they are the only valid moves. else, return other moves.
+    if (validJumps.length > 0) {
+      return validJumps;
+    } else {
+      return validMoves;
+    }
+  }
+
   this.checkForKings = function() {
     var whiteKings = [];
     var blackKings = [];

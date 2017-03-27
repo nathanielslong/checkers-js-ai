@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  buildBoard();
+    buildBoard();
 })
 
 // in the div board, append divs so that 10 fit in each row
@@ -22,3 +22,20 @@ function buildBoard() {
   }
 }
 
+function populateBoard() {
+  var board = $('.cell');
+
+  for (i = 0; i < 100; i++) {
+    if ($(board[i]).hasClass('odd')) {
+      if (i >= 0 && i <= 38) {
+        $(board[i]).html("B");
+      } else if (i > 38 && i < 60) {
+        $(board[i]).html("E");
+      } else {
+        $(board[i]).html("W");
+      }
+    } else {
+      $(board[i]).html("E");
+    }
+  }
+}

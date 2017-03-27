@@ -56,20 +56,22 @@ human.switchViewTo = function(turn) {
 }
 
 // Play move function takes care of actually playing the specificed move
-human.playMove = function(startPosition, finalPosition, symbol, isJump= false) {
+human.playMove = function(startPosition, finalPosition, symbol) {
   var board = $('.cell');
   var startCell = $(board[startPosition]);
   var finalCell = $(board[finalPosition]);
 
-  if ($(startCell).val() == symbol && $(finalCell).val() == "E") {
-    $(startCell).val("E");
-    $(finalCell).val(symbol);
+  if ($(startCell).html() == symbol && $(finalCell).html() == "E") {
+    $(startCell).html("E");
+    $(finalCell).html(symbol);
   }
 
-  if (finalPosition - startPosition > 11) {
-    var jumpCell = $(board[(finalPosition - startPosition) / 2]);
-    if ($(jumpCell).val() != symbol && $(jumpCell.val() != "E")) {
-      $(jumpCell).val("E");
+  if (Math.abs(finalPosition - startPosition) > 11) {
+    var jumpCell = $(board[(finalPosition + startPosition) / 2]);
+    if ($(jumpCell).html() != symbol && $(jumpCell.html() != "E")) {
+      $(jumpCell).html("E");
     }
   }
+
+  // refresh dom
 }
