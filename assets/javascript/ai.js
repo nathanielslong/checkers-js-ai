@@ -63,7 +63,9 @@ var AI = function(level) {
 
     var next = action.applyTo(game.currentState);
 
-    human.playMove(randomPosition[0], randomPosition[1], turn);
+    human.playMove(next);
+
+    console.log(next.board)
 
     game.advanceTo(next);
   }
@@ -139,9 +141,10 @@ var AI = function(level) {
     var chosenAction = availableActions[0];
     var next = chosenAction.applyTo(game.currentState);
 
-    human.playMove(chosenAction.initialPosition, chosenAction.movePosition, turn);
+    human.playMove(next);
 
     game.advanceTo(next);
+
   }
 
   // function that specifies the game to be played
@@ -191,7 +194,7 @@ var AIAction = function(pos1, pos2) {
     //if move position is either end, mark king
 
     // later add for more than one jump (valid moves only counts for single jumps right now anyway)
-    if (this.isJump) {
+    if (this.isJump(this.initialPosition, this.movePosition)) {
       next.board[(this.movePosition + this.initialPosition) / 2] = "E";
       next.capBlackPieces++;
     }

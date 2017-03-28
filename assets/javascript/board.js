@@ -452,7 +452,7 @@ var State = function(old) {
     return [whiteKings, blackKings];
   }
   // Now we define functions of state
-  this.advanceTurn = function() {
+   this.advanceTurn = function() {
     this.turn = this.turn == "W" ? "B" : "W";
   }
 
@@ -512,18 +512,18 @@ var Game = function(autoPlayer) {
 
       if (_state.result == "White won") {
         human.switchViewTo("won");
-        humanScore++;
+        // humanScore++;
       } else if (_state.result == "Black won") {
         human.switchViewTo("lost");
-        robotScore++;
+        // robotScore++;
       } else {
         human.switchViewTo("draw");
-        drawScore++;
+        // drawScore++;
       }
 
-      $('.human-score').html(humanScore);
-      $('.robot-score').html(robotScore);
-      $('.draw-score').html(drawScore);
+      // $('.human-score').html(humanScore);
+      // $('.robot-score').html(robotScore);
+      // $('.draw-score').html(drawScore);
       $('.messages').html("Play again?").fadeIn();
 
     } else { // Game is still running, so we switch players

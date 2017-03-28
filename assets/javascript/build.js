@@ -1,7 +1,3 @@
-$(document).ready(function() {
-    buildBoard();
-})
-
 // in the div board, append divs so that 10 fit in each row
 function buildBoard() {
   for (i = 0; i < 100; i++) {
@@ -22,20 +18,28 @@ function buildBoard() {
   }
 }
 
-function populateBoard() {
-  var board = $('.cell');
+function populateBoard(board = "undefined") {
+  if (typeof board !== 'object') {
+    var domBoard = $('.cell');
 
-  for (i = 0; i < 100; i++) {
-    if ($(board[i]).hasClass('odd')) {
-      if (i >= 0 && i <= 38) {
-        $(board[i]).html("B");
-      } else if (i > 38 && i < 60) {
-        $(board[i]).html("E");
+    for (i = 0; i < 100; i++) {
+      if ($(domBoard[i]).hasClass('odd')) {
+        if (i >= 0 && i <= 38) {
+          $(domBoard[i]).html("B");
+        } else if (i > 38 && i < 60) {
+          $(domBoard[i]).html("E");
+        } else {
+          $(domBoard[i]).html("W");
+        }
       } else {
-        $(board[i]).html("W");
+        $(domBoard[i]).html("E");
       }
-    } else {
-      $(board[i]).html("E");
+    }
+  } else {
+    var domBoard = $('.cell');
+
+    for (i = 0; i < 100; i++) {
+      $(domBoard[i]).text(board[i])
     }
   }
 }
