@@ -18,7 +18,7 @@ function buildBoard() {
   }
 }
 
-function populateBoard() {
+function populateBoard(board) {
   var board = $('.cell');
 
   for (i = 0; i < 100; i++) {

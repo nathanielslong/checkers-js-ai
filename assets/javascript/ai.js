@@ -144,6 +144,7 @@ var AI = function(level) {
     human.playMove(chosenAction.initialPosition, chosenAction.movePosition, turn);
 
     game.advanceTo(next);
+
   }
 
   // function that specifies the game to be played

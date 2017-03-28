@@ -64,16 +64,15 @@ human.playMove = function(startPosition, finalPosition, symbol) {
   if ($(startCell).html() == symbol && $(finalCell).html() == "E") {
     $(startCell).html("E");
     $(finalCell).html(symbol);
-  }
 
-  if (Math.abs(finalPosition - startPosition) > 11) {
-    var jumpCell = $(board[(finalPosition + startPosition) / 2]);
-    if ($(jumpCell).html() != symbol && $(jumpCell.html() != "E")) {
-      $(jumpCell).html("E");
+    if (Math.abs(finalPosition - startPosition) > 11) {
+      var jumpCell = $(board[(finalPosition + startPosition) / 2]);
+      if ($(jumpCell).html() != symbol && $(jumpCell.html() != "E")) {
+        $(jumpCell).html("E");
+      }
     }
+    console.log("move played for " + symbol)
   }
 
-  console.log("move played for " + symbol)
 
-  // refresh dom
 }
