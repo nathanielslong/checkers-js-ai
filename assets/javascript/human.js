@@ -73,5 +73,7 @@ human.playMove = function(startPosition, finalPosition, symbol) {
     }
   }
 
+  console.log("move played for " + symbol)
+
   // refresh dom
 }

@@ -1,8 +1,13 @@
 $(document).ready(function() {
   buildBoard();
   populateBoard();
+  clickEvents();
 
-  // put here since if not it won't work due to sequence of dom loading
+
+})
+
+// sets event listeners for clicks, turns off at the end
+function clickEvents() {
   $('.odd').each(function() {
     var $this = $(this);
     $this.click(function() {
@@ -33,21 +38,24 @@ $(document).ready(function() {
 
             if (Math.abs(endPosition - index) > 11) {
               next.board[(endPosition + index) / 2] = "E";
-              next.state.capBlackPieces++;
+              next.capBlackPieces++;
             }
 
             human.playMove(index, endPosition, "W");
 
+            console.log(next.board)
+
             next.advanceTurn();
 
             globals.game.advanceTo(next);
+
+            $('.board').off();
           })
         })
       }
     })
   })
-
-})
+}
 
 // This deals with the user control on the site
 // set storage for variables in the site
