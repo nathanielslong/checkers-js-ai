@@ -20,7 +20,6 @@ function buildBoard() {
 
 function populateBoard(board = "undefined") {
   if (typeof board !== 'object') {
-    console.log("FUCK YOU")
     var domBoard = $('.cell');
 
     for (i = 0; i < 100; i++) {
