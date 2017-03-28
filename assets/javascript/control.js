@@ -38,7 +38,7 @@ function clickEvents() {
             next.capBlackPieces++;
           }
 
-          human.playMove(index, endPosition, "W");
+          human.playMove(next);
 
           next.advanceTurn();
 

@@ -18,20 +18,29 @@ function buildBoard() {
   }
 }
 
-function populateBoard(board) {
-  var board = $('.cell');
+function populateBoard(board = "undefined") {
+  if (typeof board !== 'object') {
+    console.log("FUCK YOU")
+    var domBoard = $('.cell');
 
-  for (i = 0; i < 100; i++) {
-    if ($(board[i]).hasClass('odd')) {
-      if (i >= 0 && i <= 38) {
-        $(board[i]).html("B");
-      } else if (i > 38 && i < 60) {
-        $(board[i]).html("E");
+    for (i = 0; i < 100; i++) {
+      if ($(domBoard[i]).hasClass('odd')) {
+        if (i >= 0 && i <= 38) {
+          $(domBoard[i]).html("B");
+        } else if (i > 38 && i < 60) {
+          $(domBoard[i]).html("E");
+        } else {
+          $(domBoard[i]).html("W");
+        }
       } else {
-        $(board[i]).html("W");
+        $(domBoard[i]).html("E");
       }
-    } else {
-      $(board[i]).html("E");
+    }
+  } else {
+    var domBoard = $('.cell');
+
+    for (i = 0; i < 100; i++) {
+      $(domBoard[i]).text(board[i])
     }
   }
 }

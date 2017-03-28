@@ -63,7 +63,7 @@ var AI = function(level) {
 
     var next = action.applyTo(game.currentState);
 
-    human.playMove(randomPosition[0], randomPosition[1], turn);
+    human.playMove(next);
 
     console.log(next.board)
 
@@ -141,7 +141,7 @@ var AI = function(level) {
     var chosenAction = availableActions[0];
     var next = chosenAction.applyTo(game.currentState);
 
-    human.playMove(chosenAction.initialPosition, chosenAction.movePosition, turn);
+    human.playMove(next);
 
     game.advanceTo(next);
 
