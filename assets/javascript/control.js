@@ -4,14 +4,26 @@ $(document).ready(function() {
   clickEvents();
 })
 
+function containedMove(index, array) {
+  for (i = 0; i < array.length; i++) {
+    if (index == array[i][0]) {
+      return true;
+    }
+  } return false;
+}
+
 // sets event listeners for clicks, turns off at the end
 function clickEvents() {
   $('.board').on('click', '.odd', function() {
     var $this = $(this);
-    if (globals.game.status == "running" && globals.game.currentState.turn == "W" && $this.html() == "W") {
-      var index = parseInt($this.data('index'));
 
+    var validMoves = globals.game.currentState.allValidMoves(globals.game.currentState.turn);
+
+    var index = parseInt($this.data('index'));
+
+    if (globals.game.status == "running" && globals.game.currentState.turn == "W" && $this.html() == "W" && containedMove(index, validMoves)) {
       var possibleMoves = globals.game.currentState.indexValidMoves(index)
+
       var endingLocations = possibleMoves.map(function(x) {return x[1]})
       endingLocations = endingLocations.filter(function(x) {return x != undefined});
 
@@ -87,11 +99,7 @@ $('.start').click(function() {
 // Allow restarting of the game
 $('.messages').click(function() {
   if (globals.game.status == "ended") {
-    var board = $('.cell');
-
-    for (i = 0; i < board.length; i++) {
-      $(board[i]).html('');
-    }
+    $('.board').html("");
 
     var difficulties = $('.level');
 
@@ -106,5 +114,9 @@ $('.messages').click(function() {
     $('.messages').fadeOut();
     $('.start').hide();
     human.initialControlsVisible = true;
+
+    buildBoard();
+    populateBoard();
+    clickEvents();
   }
 })

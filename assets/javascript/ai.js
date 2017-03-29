@@ -57,6 +57,7 @@ var AI = function(level) {
   // rewrite for two positions
   function takeARandomMove(turn) {
     var available = game.currentState.allValidMoves(turn);
+    console.log(available);
     var randomPosition = available[Math.floor(Math.random() * available.length)];
     console.log(randomPosition);
     var action = new AIAction(randomPosition[0],randomPosition[1]);
@@ -196,7 +197,11 @@ var AIAction = function(pos1, pos2) {
     // later add for more than one jump (valid moves only counts for single jumps right now anyway)
     if (this.isJump(this.initialPosition, this.movePosition)) {
       next.board[(this.movePosition + this.initialPosition) / 2] = "E";
-      next.capBlackPieces++;
+      if (state.turn == "B") {
+        next.capWhitePieces++;
+      } else {
+        next.capBlackPieces++;
+      }
     }
 
     if (state.turn == "B") {

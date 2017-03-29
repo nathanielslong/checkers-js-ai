@@ -66,19 +66,19 @@ var State = function(old) {
 
   //make jump checker functions, Boolean
   this.canJumpLowerLeft = function(index) {
-    return this.position(index + 9) == this.oppColor(index) && this.position(index + 18) == "E";
+    return this.position(index + 9) == this.oppColor(index) && this.position(index + 18) == "E" && Math.floor(index / 10) + 1 == Math.floor((index + 9) / 10) && Math.floor((index + 9) / 10) + 1 == Math.floor((index + 18) / 10);
   }
 
   this.canJumpLowerRight = function(index) {
-    return this.position(index + 11) == this.oppColor(index) && this.position(index + 22) == "E";
+    return this.position(index + 11) == this.oppColor(index) && this.position(index + 22) == "E" && Math.floor(index / 10) + 1 == Math.floor((index + 11) / 10) && Math.floor((index + 11) / 10) + 1 == Math.floor((index + 22) / 10);
   }
 
   this.canJumpUpperLeft = function(index) {
-    return this.position(index - 11) == this.oppColor(index) && this.position(index - 22) == "E";
+    return this.position(index - 11) == this.oppColor(index) && this.position(index - 22) == "E" && Math.floor(index / 10) - 1 == Math.floor((index - 11) / 10) && Math.floor((index - 11) / 10) - 1 == Math.floor((index - 22) / 10);
   }
 
   this.canJumpUpperRight = function(index) {
-    return this.position(index - 9) == this.oppColor(index) && this.position(index - 18) == "E";
+    return this.position(index - 9) == this.oppColor(index) && this.position(index - 18) == "E" && Math.floor(index / 10) - 1 == Math.floor((index - 9) / 10) && Math.floor((index - 9) / 10) - 1 == Math.floor((index - 18) / 10);
   }
 
   // checks if a given piece has any jumps (currently only single jumps)
@@ -97,7 +97,7 @@ var State = function(old) {
           }
         }
         //if right wall
-      } else if (index % 9 == 0) {
+      } else if ((index - 9)% 10 == 0) {
         if (this.canJumpUpperLeft(index)) {
           jumpSpaces.push(index - 22);
         }
@@ -151,7 +151,7 @@ var State = function(old) {
           }
         }
         //if right wall
-      } else if (index % 9 == 0) {
+      } else if ((index - 9) % 10 == 0) {
         if (this.canJumpLowerLeft(index)) {
           jumpSpaces.push(index + 18);
         }
@@ -360,6 +360,7 @@ var State = function(old) {
       if (matcher.test(this.position(i))) {
         var moves = this.canMoveAny(i);
         var jumps = this.canJumpAny(i);
+
         if (moves.length > 0) {
           for (j = 0; j < moves.length; j++) {
             if (moves[j].length > 1) {
@@ -379,10 +380,10 @@ var State = function(old) {
             if (jumps[j].length > 1) {
               // get them all as individual pairs
               for (k = 0; k < jumps[j].length; k++) {
-                validMoves.push([i],jumps[j][k]);
+                validJumps.push([i],jumps[j][k]);
               }
             } else {
-              validMoves.push([i,jumps[j]]);
+              validJumps.push([i,jumps[j]]);
             }
           }
         }
@@ -402,7 +403,6 @@ var State = function(old) {
     var validJumps = [];
 
     var moves = this.canMoveAny(i);
-    console.log(moves)
     var jumps = this.canJumpAny(i);
     if (moves.length > 0) {
       for (j = 0; j < moves.length; j++) {
@@ -423,10 +423,10 @@ var State = function(old) {
         if (jumps[j].length > 1) {
           // get them all as individual pairs
           for (k = 0; k < jumps[j].length; k++) {
-            validMoves.push([i],jumps[j][k]);
+            valiJumps.push([i],jumps[j][k]);
           }
         } else {
-          validMoves.push([i,jumps[j]]);
+          validJumps.push([i,jumps[j]]);
         }
       }
     }
