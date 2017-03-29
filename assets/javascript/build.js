@@ -43,3 +43,8 @@ function populateBoard(board = "undefined") {
     }
   }
 }
+
+function updateScores(state) {
+  $('.cap-black').html(state.capBlackPieces);
+  $('.cap-white').html(state.capWhitePieces);
+}
