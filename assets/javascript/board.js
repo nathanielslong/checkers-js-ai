@@ -43,12 +43,12 @@ var State = function(old) {
 
   // check if is king, return boolean
   this.isKing = function(index) {
-    /K/.test(this.position(index));
+    return /K/.test(this.position(index));
   }
 
   // get opposing color
   this.oppColor = function(index) {
-    return this.position(index) == "W" ? "B" : "W";
+    return /W/.test(this.position(index)) ? "B" : "W";
   }
 
   // set movement functions for each direction, check if empty space. Boolean functions
@@ -69,20 +69,21 @@ var State = function(old) {
   }
 
   //make jump checker functions, Boolean
+  // make so it's not opp color, because that means black can't capture white kings
   this.canJumpLowerLeft = function(index) {
-    return this.position(index + 9) == this.oppColor(index) && this.position(index + 18) == "E" && Math.floor(index / 10) + 1 == Math.floor((index + 9) / 10) && Math.floor((index + 9) / 10) + 1 == Math.floor((index + 18) / 10);
+    return this.position(index + 9).includes(this.oppColor(index)) && this.position(index + 18) == "E" && Math.floor(index / 10) + 1 == Math.floor((index + 9) / 10) && Math.floor((index + 9) / 10) + 1 == Math.floor((index + 18) / 10);
   }
 
   this.canJumpLowerRight = function(index) {
-    return this.position(index + 11) == this.oppColor(index) && this.position(index + 22) == "E" && Math.floor(index / 10) + 1 == Math.floor((index + 11) / 10) && Math.floor((index + 11) / 10) + 1 == Math.floor((index + 22) / 10);
+    return this.position(index + 11).includes(this.oppColor(index)) && this.position(index + 22) == "E" && Math.floor(index / 10) + 1 == Math.floor((index + 11) / 10) && Math.floor((index + 11) / 10) + 1 == Math.floor((index + 22) / 10);
   }
 
   this.canJumpUpperLeft = function(index) {
-    return this.position(index - 11) == this.oppColor(index) && this.position(index - 22) == "E" && Math.floor(index / 10) - 1 == Math.floor((index - 11) / 10) && Math.floor((index - 11) / 10) - 1 == Math.floor((index - 22) / 10);
+    return this.position(index - 11).includes(this.oppColor(index)) && this.position(index - 22) == "E" && Math.floor(index / 10) - 1 == Math.floor((index - 11) / 10) && Math.floor((index - 11) / 10) - 1 == Math.floor((index - 22) / 10);
   }
 
   this.canJumpUpperRight = function(index) {
-    return this.position(index - 9) == this.oppColor(index) && this.position(index - 18) == "E" && Math.floor(index / 10) - 1 == Math.floor((index - 9) / 10) && Math.floor((index - 9) / 10) - 1 == Math.floor((index - 18) / 10);
+    return this.position(index - 9).includes(this.oppColor(index)) && this.position(index - 18) == "E" && Math.floor(index / 10) - 1 == Math.floor((index - 9) / 10) && Math.floor((index - 9) / 10) - 1 == Math.floor((index - 18) / 10);
   }
 
   // checks if a given piece has any jumps (currently only single jumps)

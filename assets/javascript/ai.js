@@ -188,9 +188,14 @@ var AIAction = function(pos1, pos2) {
     var next = new State(state);
 
     next.board[this.initialPosition] = 'E';
-    next.board[this.movePosition] = state.turn;
+    next.board[this.movePosition] = state.board[this.initialPosition]
 
     //if move position is either end, mark king
+    if (state.turn == "B" && this.movePosition >= 90) {
+      next.board[this.movePosition] = "BK"
+    } else if (state.turn == "W" && this.movePosition < 10) {
+      next.board[this.movePosition] = "WK"
+    }
 
     // later add for more than one jump (valid moves only counts for single jumps right now anyway)
     if (this.isJump(this.initialPosition, this.movePosition)) {
