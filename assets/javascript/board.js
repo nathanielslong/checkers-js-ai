@@ -71,19 +71,35 @@ var State = function(old) {
   //make jump checker functions, Boolean
   // make so it's not opp color, because that means black can't capture white kings
   this.canJumpLowerLeft = function(index) {
-    return this.position(index + 9).includes(this.oppColor(index)) && this.position(index + 18) == "E" && Math.floor(index / 10) + 1 == Math.floor((index + 9) / 10) && Math.floor((index + 9) / 10) + 1 == Math.floor((index + 18) / 10);
+    if (index + 9 < 100 && index + 18 < 100) {
+      return this.position(index + 9).includes(this.oppColor(index)) && this.position(index + 18) == "E" && Math.floor(index / 10) + 1 == Math.floor((index + 9) / 10) && Math.floor((index + 9) / 10) + 1 == Math.floor((index + 18) / 10);
+    } else {
+      return false;
+    }
   }
 
   this.canJumpLowerRight = function(index) {
-    return this.position(index + 11).includes(this.oppColor(index)) && this.position(index + 22) == "E" && Math.floor(index / 10) + 1 == Math.floor((index + 11) / 10) && Math.floor((index + 11) / 10) + 1 == Math.floor((index + 22) / 10);
+    if (index + 11 < 100 && index + 22 < 100) {
+      return this.position(index + 11).includes(this.oppColor(index)) && this.position(index + 22) == "E" && Math.floor(index / 10) + 1 == Math.floor((index + 11) / 10) && Math.floor((index + 11) / 10) + 1 == Math.floor((index + 22) / 10);
+    } else {
+      return false;
+    }
   }
 
   this.canJumpUpperLeft = function(index) {
-    return this.position(index - 11).includes(this.oppColor(index)) && this.position(index - 22) == "E" && Math.floor(index / 10) - 1 == Math.floor((index - 11) / 10) && Math.floor((index - 11) / 10) - 1 == Math.floor((index - 22) / 10);
+    if (index - 11 > 0 && index - 22 > 0) {
+      return this.position(index - 11).includes(this.oppColor(index)) && this.position(index - 22) == "E" && Math.floor(index / 10) - 1 == Math.floor((index - 11) / 10) && Math.floor((index - 11) / 10) - 1 == Math.floor((index - 22) / 10);
+    } else {
+      return false;
+    }
   }
 
   this.canJumpUpperRight = function(index) {
-    return this.position(index - 9).includes(this.oppColor(index)) && this.position(index - 18) == "E" && Math.floor(index / 10) - 1 == Math.floor((index - 9) / 10) && Math.floor((index - 9) / 10) - 1 == Math.floor((index - 18) / 10);
+    if (index - 9 > 0 && index - 18 > 0) {
+      return this.position(index - 9).includes(this.oppColor(index)) && this.position(index - 18) == "E" && Math.floor(index / 10) - 1 == Math.floor((index - 9) / 10) && Math.floor((index - 9) / 10) - 1 == Math.floor((index - 18) / 10);
+    } else {
+      return false;
+    }
   }
 
   // checks if a given piece has any jumps (currently only single jumps)
@@ -190,11 +206,11 @@ var State = function(old) {
           }
         }
         if (this.isKing(index) && index > 89) {
-          if (this.canJumpLowerRight(index)) {
-            jumpSpaces.push(index + 22);
+          if (this.canJumpUpperRight(index)) {
+            jumpSpaces.push(index - 18);
           }
-          if (this.canJumpLowerLeft(index)) {
-            jumpSpaces.push(index + 18);
+          if (this.canJumpUpperLeft(index)) {
+            jumpSpaces.push(index - 22);
           }
         }
       }

@@ -56,9 +56,13 @@ function clickEvents() {
 
           human.playMove(next);
 
+          $('.current-turn').html("Black");
+
           next.advanceTurn();
 
           globals.game.advanceTo(next);
+
+
           $thistoo.off('click');
         })
       })
@@ -95,6 +99,8 @@ $('.start').click(function() {
     aiPlayer.plays(globals.game);
 
     globals.game.start();
+
+    $('.current-turn').html("White");
 
     $('.title').fadeOut();
   }

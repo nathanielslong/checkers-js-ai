@@ -65,6 +65,7 @@ var AI = function(level) {
     human.playMove(next);
 
     console.log(next.board)
+    $('.current-turn').html("White");
 
     game.advanceTo(next);
   }
