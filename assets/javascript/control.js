@@ -21,7 +21,7 @@ function clickEvents() {
 
     var index = parseInt($this.data('index'));
 
-    if (globals.game.status == "running" && globals.game.currentState.turn == "W" && $this.html() == "W" && containedMove(index, validMoves)) {
+    if (globals.game.status == "running" && globals.game.currentState.turn == "W" && /W/.test($this.html()) && containedMove(index, validMoves)) {
       var possibleMoves = globals.game.currentState.indexValidMoves(index)
 
       var endingLocations = possibleMoves.map(function(x) {return x[1]})
@@ -43,7 +43,11 @@ function clickEvents() {
           var next = new State(globals.game.currentState);
 
           next.board[index] = "E";
-          next.board[endPosition] = "W";
+          next.board[endPosition] = globals.game.currentState.board[index];
+
+          if (index < 10) {
+            next.board[this.movePosition] = "WK"
+          }
 
           if (Math.abs(endPosition - index) > 11) {
             next.board[(endPosition + index) / 2] = "E";
