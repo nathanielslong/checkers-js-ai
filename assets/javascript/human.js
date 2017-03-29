@@ -61,5 +61,7 @@ human.playMove = function(state) {
   $('.board').off('click', '.odd');
   buildBoard();
   populateBoard(state.board);
+
+  updateScores(state);
   clickEvents();
 }

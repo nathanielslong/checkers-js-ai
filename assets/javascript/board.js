@@ -1,6 +1,10 @@
 // start a variable to hold the current board
 var initialBoard = ['E','B','E','B','E','B','E','B','E','B','B','E','B','E','B','E','B','E','B','E','E','B','E','B','E','B','E','B','E','B','B','E','B','E','B','E','B','E','B','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','W','E','W','E','W','E','W','E','W','W','E','W','E','W','E','W','E','W','E','E','W','E','W','E','W','E','W','E','W','W','E','W','E','W','E','W','E','W','E'];
 
+var humanScore = 0;
+var robotScore = 0;
+var drawScore = 0;
+
 // State is initialized with the old state of the game, in order to have a reference to advance the game.
 var State = function(old) {
   // Sets whose turn it is (human or ai)
@@ -452,7 +456,7 @@ var State = function(old) {
     return [whiteKings, blackKings];
   }
   // Now we define functions of state
-   this.advanceTurn = function() {
+  this.advanceTurn = function() {
     this.turn = this.turn == "W" ? "B" : "W";
   }
 
@@ -512,18 +516,18 @@ var Game = function(autoPlayer) {
 
       if (_state.result == "White won") {
         human.switchViewTo("won");
-        // humanScore++;
+        humanScore++;
       } else if (_state.result == "Black won") {
         human.switchViewTo("lost");
-        // robotScore++;
+        robotScore++;
       } else {
         human.switchViewTo("draw");
-        // drawScore++;
+        drawScore++;
       }
 
-      // $('.human-score').html(humanScore);
-      // $('.robot-score').html(robotScore);
-      // $('.draw-score').html(drawScore);
+      $('.human-score').html(humanScore);
+      $('.robot-score').html(robotScore);
+      $('.draw-score').html(drawScore);
       $('.messages').html("Play again?").fadeIn();
 
     } else { // Game is still running, so we switch players

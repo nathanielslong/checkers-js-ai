@@ -16,6 +16,13 @@
   text-align: center;
 }
 
+.scoreboard {
+  position: absolute;
+  font-family: "Aldrich", sans-serif;
+  top: 20px;
+  right: 20px;
+}
+
 .even {
   height: 45px;
   width: 45px;
