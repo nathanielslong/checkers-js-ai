@@ -58,6 +58,7 @@ human.switchViewTo = function(turn) {
 // Play move function redraws the board after each move
 human.playMove = function(state) {
   $('.board').html("");
+  $('.board').off('click', '.odd');
   buildBoard();
   populateBoard(state.board);
   clickEvents();
