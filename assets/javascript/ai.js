@@ -57,9 +57,7 @@ var AI = function(level) {
   // rewrite for two positions
   function takeARandomMove(turn) {
     var available = game.currentState.allValidMoves(turn);
-    console.log(available);
     var randomPosition = available[Math.floor(Math.random() * available.length)];
-    console.log(randomPosition);
     var action = new AIAction(randomPosition[0],randomPosition[1]);
 
     var next = action.applyTo(game.currentState);
