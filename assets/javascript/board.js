@@ -363,33 +363,40 @@ var State = function(old) {
 
   // checks the number of jumps for a given piece.number is a variable to keep track through recursion how many jumps. if multiplepaths, return array of numbers
   this.numberOfJumps = function(index, number, board = this.board) {
-    var currentBoard = board;
+    var currentBoard = board.slice(0);
+    var state = new State()
+    state.board = currentBoard
 
-    if (this.canJumpAny(index).length > 1) {
-      currentBoard[this.canJumpAny(index)[0]] = currentBoard[index];
-      currentBoard[(this.canJumpAny(index)[0] + index) / 2] = "E";
-      currentBoard[index] = "E";
-
+    if (state.canJumpAny(index).length > 1) {
       var numJumpArray = [];
+      var jumps = state.canJumpAny(index);
 
-      this.canJumpAny(index).map(function(pos) {
-        numJumpArray.push(this.numberOfJumps(pos, number + 1, currentBoard));
-      })
+      for (i = 0; i < jumps.length; i++) {
+        var pos1 = index;
+        var pos2 = jumps[i];
+        var pos3 = (index + jumps[i]) / 2;
+        var newBoard = currentBoard.slice(0);
 
+
+        newBoard[pos2] = currentBoard[pos1];
+        newBoard[pos1] = "E";
+        newBoard[pos3] = "E";
+        numJumpArray.push(state.numberOfJumps(jumps[i], number + 1, newBoard));
+      }
       return numJumpArray;
 
-    } else if (this.canJumpAny(index).length == 1) {
+    } else if (state.canJumpAny(index).length == 1) {
       var pos1 = index;
-      var pos2 = this.canJumpAny(index)[0];
-      var pos3 = (this.canJumpAny(index)[0] + index) / 2;
+      var pos2 = state.canJumpAny(index)[0];
+      var pos3 = (state.canJumpAny(index)[0] + index) / 2;
 
       currentBoard[pos2] = currentBoard[pos1];
       currentBoard[pos1] = "E";
       currentBoard[pos3] = "E";
 
-      return [index, this.numberOfJumps(pos2, number + 1, currentBoard)];
+      return [index, state.numberOfJumps(pos2, number + 1, currentBoard)];
     } else {
-      return [index, currentBoard[this.canJumpAny(index)[0]]];
+      return [index, currentBoard[state.canJumpAny(index)[0]]];
     }
   }
 
@@ -478,26 +485,30 @@ var State = function(old) {
     // if there are any jumps, they are the only valid moves and check for multiple jumps. else, return other moves.
     if (validJumps.length > 0) {
       var validJumpArray = [];
-      for (i = 0; i < validJumps.length; i++) {
-        console.log(validJumps)
+      for (j = 0; j < validJumps.length; j++) {
+        console.log(this.board)
 
-        var newBoard = this.board;
-        newBoard[validJumps[i][1]] = this.board[validJumps[i][0]];
-        console.log(newBoard)
-        console.log(this.board[validJumps[i][0]])
+        var newBoard = this.board.slice(0);
 
-        newBoard[validJumps[i][0]] = "E";
+        newBoard[validJumps[j][1]] = newBoard[validJumps[j][0]];
+        newBoard[(validJumps[j][1] + validJumps[j][0]) / 2] = "E";
+        newBoard[validJumps[j][0]] = "E";
         console.log(newBoard);
 
-        var multiJump = this.numberOfJumps(validJumps[i][1], 0, newBoard);
+        console.log(this.canJumpAny(validJumps[j][1]));
+        console.log(this.canJumpUpperLeft(validJumps[j][1]));
+        console.log(newBoard);
+        var multiJump = this.numberOfJumps(validJumps[j][1], 0, newBoard);
         console.log(multiJump)
+
         multiJump = this.expandOutArray(multiJump);
         console.log(multiJump)
+
         if (multiJump.length > 1) {
-          validJumpArray.push([validJumps[i][0], multiJump[multiJump.length -1 ]]);
+          validJumpArray.push([validJumps[j][0], multiJump[multiJump.length - 1]]);
           console.log("multiples")
         } else {
-          validJumpArray.push(validJumps[i]);
+          validJumpArray.push(validJumps[j]);
         }
       }
       return validJumpArray;
