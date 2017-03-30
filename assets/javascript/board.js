@@ -486,27 +486,19 @@ var State = function(old) {
     if (validJumps.length > 0) {
       var validJumpArray = [];
       for (j = 0; j < validJumps.length; j++) {
-        console.log(this.board)
 
         var newBoard = this.board.slice(0);
 
         newBoard[validJumps[j][1]] = newBoard[validJumps[j][0]];
         newBoard[(validJumps[j][1] + validJumps[j][0]) / 2] = "E";
         newBoard[validJumps[j][0]] = "E";
-        console.log(newBoard);
 
-        console.log(this.canJumpAny(validJumps[j][1]));
-        console.log(this.canJumpUpperLeft(validJumps[j][1]));
-        console.log(newBoard);
         var multiJump = this.numberOfJumps(validJumps[j][1], 0, newBoard);
-        console.log(multiJump)
 
         multiJump = this.expandOutArray(multiJump);
-        console.log(multiJump)
 
         if (multiJump.length > 1) {
           validJumpArray.push([validJumps[j][0], multiJump[multiJump.length - 1]]);
-          console.log("multiples")
         } else {
           validJumpArray.push(validJumps[j]);
         }

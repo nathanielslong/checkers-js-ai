@@ -56,88 +56,88 @@ function clickEvents() {
 
               for (i = 0; i < multiJump.length - 1; i++) {
                 next.board[(multiJump[i + 1] + multiJump[i]) / 2] = "E";
-                  next.capBlackPieces++;
+                next.capBlackPieces++;
               }
 
             } else {
               next.board[(endPosition + index) / 2] = "E";
               next.capBlackPieces++;
             }
-            }
+          }
 
-            human.playMove(next);
+          human.playMove(next);
 
-            $('.current-turn').html("Black");
+          $('.current-turn').html("Black");
 
-            next.advanceTurn();
+          next.advanceTurn();
 
-            globals.game.advanceTo(next);
+          globals.game.advanceTo(next);
 
 
-            $thistoo.off('click');
-          })
+          $thistoo.off('click');
         })
-      }
-    })
+      })
+    }
+  })
+}
+
+// This deals with the user control on the site
+// set storage for variables in the site
+var globals = {};
+
+// choose difficulty level
+$('.level').each(function() {
+  var $this = $(this);
+  $this.click(function() {
+    $('.selected').toggleClass('not-selected');
+    $('.selected').toggleClass('selected');
+    $this.toggleClass('not-selected');
+    $this.toggleClass('selected');
+
+    ai.level = $this.attr('id');
+
+    $('.start').fadeIn();
+  })
+})
+
+// Start game
+$('.start').click(function() {
+  var selectedDifficulty = $('.selected').attr('id');
+  if (typeof selectedDifficulty !== "undefined") {
+    var aiPlayer = new AI(selectedDifficulty);
+    globals.game = new Game(aiPlayer);
+
+    aiPlayer.plays(globals.game);
+
+    globals.game.start();
+
+    $('.current-turn').html("White");
+
+    $('.title').fadeOut();
   }
+})
 
-  // This deals with the user control on the site
-  // set storage for variables in the site
-  var globals = {};
+// Allow restarting of the game
+$('.messages').click(function() {
+  if (globals.game.status == "ended") {
+    $('.board').html("");
 
-  // choose difficulty level
-  $('.level').each(function() {
-    var $this = $(this);
-    $this.click(function() {
-      $('.selected').toggleClass('not-selected');
-      $('.selected').toggleClass('selected');
-      $this.toggleClass('not-selected');
-      $this.toggleClass('selected');
+    var difficulties = $('.level');
 
-      ai.level = $this.attr('id');
-
-      $('.start').fadeIn();
-    })
-  })
-
-  // Start game
-  $('.start').click(function() {
-    var selectedDifficulty = $('.selected').attr('id');
-    if (typeof selectedDifficulty !== "undefined") {
-      var aiPlayer = new AI(selectedDifficulty);
-      globals.game = new Game(aiPlayer);
-
-      aiPlayer.plays(globals.game);
-
-      globals.game.start();
-
-      $('.current-turn').html("White");
-
-      $('.title').fadeOut();
+    for (i = 0; i < difficulties.length; i++) {
+      $(difficulties[i]).removeClass('selected');
+      $(difficulties[i]).addClass('not-selected');
     }
-  })
 
-  // Allow restarting of the game
-  $('.messages').click(function() {
-    if (globals.game.status == "ended") {
-      $('.board').html("");
+    $('.title').fadeIn();
+    $('.initial').fadeIn();
+    $('.ingame').fadeOut();
+    $('.messages').fadeOut();
+    $('.start').hide();
+    human.initialControlsVisible = true;
 
-      var difficulties = $('.level');
-
-      for (i = 0; i < difficulties.length; i++) {
-        $(difficulties[i]).removeClass('selected');
-        $(difficulties[i]).addClass('not-selected');
-      }
-
-      $('.title').fadeIn();
-      $('.initial').fadeIn();
-      $('.ingame').fadeOut();
-      $('.messages').fadeOut();
-      $('.start').hide();
-      human.initialControlsVisible = true;
-
-      buildBoard();
-      populateBoard();
-      clickEvents();
-    }
-  })
+    buildBoard();
+    populateBoard();
+    clickEvents();
+  }
+})
