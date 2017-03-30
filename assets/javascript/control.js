@@ -50,83 +50,94 @@ function clickEvents() {
           }
 
           if (Math.abs(endPosition - index) > 11) {
-            next.board[(endPosition + index) / 2] = "E";
-            next.capBlackPieces++;
-          }
+            var multiJump = globals.game.currentState.numberOfJumps(index, 0);
+            multiJump = globals.game.currentState.expandOutArray(multiJump);
+            if (multiJump.length > 2) {
 
-          human.playMove(next);
+              for (i = 0; i < multiJump.length - 1; i++) {
+                next.board[(multiJump[i + 1] + multiJump[i]) / 2] = "E";
+                  next.capBlackPieces++;
+              }
 
-          $('.current-turn').html("Black");
+            } else {
+              next.board[(endPosition + index) / 2] = "E";
+              next.capBlackPieces++;
+            }
+            }
 
-          next.advanceTurn();
+            human.playMove(next);
 
-          globals.game.advanceTo(next);
+            $('.current-turn').html("Black");
+
+            next.advanceTurn();
+
+            globals.game.advanceTo(next);
 
 
-          $thistoo.off('click');
+            $thistoo.off('click');
+          })
         })
-      })
+      }
+    })
+  }
+
+  // This deals with the user control on the site
+  // set storage for variables in the site
+  var globals = {};
+
+  // choose difficulty level
+  $('.level').each(function() {
+    var $this = $(this);
+    $this.click(function() {
+      $('.selected').toggleClass('not-selected');
+      $('.selected').toggleClass('selected');
+      $this.toggleClass('not-selected');
+      $this.toggleClass('selected');
+
+      ai.level = $this.attr('id');
+
+      $('.start').fadeIn();
+    })
+  })
+
+  // Start game
+  $('.start').click(function() {
+    var selectedDifficulty = $('.selected').attr('id');
+    if (typeof selectedDifficulty !== "undefined") {
+      var aiPlayer = new AI(selectedDifficulty);
+      globals.game = new Game(aiPlayer);
+
+      aiPlayer.plays(globals.game);
+
+      globals.game.start();
+
+      $('.current-turn').html("White");
+
+      $('.title').fadeOut();
     }
   })
-}
 
-// This deals with the user control on the site
-// set storage for variables in the site
-var globals = {};
+  // Allow restarting of the game
+  $('.messages').click(function() {
+    if (globals.game.status == "ended") {
+      $('.board').html("");
 
-// choose difficulty level
-$('.level').each(function() {
-  var $this = $(this);
-  $this.click(function() {
-    $('.selected').toggleClass('not-selected');
-    $('.selected').toggleClass('selected');
-    $this.toggleClass('not-selected');
-    $this.toggleClass('selected');
+      var difficulties = $('.level');
 
-    ai.level = $this.attr('id');
+      for (i = 0; i < difficulties.length; i++) {
+        $(difficulties[i]).removeClass('selected');
+        $(difficulties[i]).addClass('not-selected');
+      }
 
-    $('.start').fadeIn();
-  })
-})
+      $('.title').fadeIn();
+      $('.initial').fadeIn();
+      $('.ingame').fadeOut();
+      $('.messages').fadeOut();
+      $('.start').hide();
+      human.initialControlsVisible = true;
 
-// Start game
-$('.start').click(function() {
-  var selectedDifficulty = $('.selected').attr('id');
-  if (typeof selectedDifficulty !== "undefined") {
-    var aiPlayer = new AI(selectedDifficulty);
-    globals.game = new Game(aiPlayer);
-
-    aiPlayer.plays(globals.game);
-
-    globals.game.start();
-
-    $('.current-turn').html("White");
-
-    $('.title').fadeOut();
-  }
-})
-
-// Allow restarting of the game
-$('.messages').click(function() {
-  if (globals.game.status == "ended") {
-    $('.board').html("");
-
-    var difficulties = $('.level');
-
-    for (i = 0; i < difficulties.length; i++) {
-      $(difficulties[i]).removeClass('selected');
-      $(difficulties[i]).addClass('not-selected');
+      buildBoard();
+      populateBoard();
+      clickEvents();
     }
-
-    $('.title').fadeIn();
-    $('.initial').fadeIn();
-    $('.ingame').fadeOut();
-    $('.messages').fadeOut();
-    $('.start').hide();
-    human.initialControlsVisible = true;
-
-    buildBoard();
-    populateBoard();
-    clickEvents();
-  }
-})
+  })

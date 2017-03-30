@@ -434,7 +434,7 @@ var State = function(old) {
         }
       }
     }
-    // if there are any jumps, they are the only valid moves. else, return other moves.
+    // if there are any jumps, they are the only valid moves and check multiples. else, return other moves.
     if (validJumps.length > 0) {
       return validJumps;
     } else {
@@ -475,9 +475,32 @@ var State = function(old) {
         }
       }
     }
-    // if there are any jumps, they are the only valid moves. else, return other moves.
+    // if there are any jumps, they are the only valid moves and check for multiple jumps. else, return other moves.
     if (validJumps.length > 0) {
-      return validJumps;
+      var validJumpArray = [];
+      for (i = 0; i < validJumps.length; i++) {
+        console.log(validJumps)
+
+        var newBoard = this.board;
+        newBoard[validJumps[i][1]] = this.board[validJumps[i][0]];
+        console.log(newBoard)
+        console.log(this.board[validJumps[i][0]])
+
+        newBoard[validJumps[i][0]] = "E";
+        console.log(newBoard);
+
+        var multiJump = this.numberOfJumps(validJumps[i][1], 0, newBoard);
+        console.log(multiJump)
+        multiJump = this.expandOutArray(multiJump);
+        console.log(multiJump)
+        if (multiJump.length > 1) {
+          validJumpArray.push([validJumps[i][0], multiJump[multiJump.length -1 ]]);
+          console.log("multiples")
+        } else {
+          validJumpArray.push(validJumps[i]);
+        }
+      }
+      return validJumpArray;
     } else {
       return validMoves;
     }

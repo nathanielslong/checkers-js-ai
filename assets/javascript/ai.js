@@ -200,11 +200,17 @@ var AIAction = function(pos1, pos2) {
 
     if (this.isJump(this.initialPosition, this.movePosition)) {
       var multiJump = state.numberOfJumps(this.initialPosition, 0);
-      if (multiJump[1].length > 1) {
-        // multiple jumps are true
-        var multiJumpArray = [];
+      multiJump = state.expandOutArray(multiJump);
+      if (multiJump.length > 2) {
 
-        // loop to get all values out of the array within arrays
+        for (i = 0; i < multiJump.length - 1; i++) {
+          next.board[(multiJump[i + 1] + multiJump[i]) / 2] = "E";
+          if (state.turn == "B") {
+            next.capWhitePieces++;
+          } else {
+            next.capBlackPieces++;
+          }
+        }
 
       } else {
         next.board[(this.movePosition + this.initialPosition) / 2] = "E";
