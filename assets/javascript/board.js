@@ -363,9 +363,9 @@ var State = function(old) {
       currentBoard[pos1] = "E";
       currentBoard[pos3] = "E";
 
-      return this.numberOfJumps(pos2, number + 1, currentBoard);
+      return [index, this.numberOfJumps(pos2, number + 1, currentBoard)];
     } else {
-      return number;
+      return [index, currentBoard[this.canJumpAny(index)[0]]];
     }
   }
 
