@@ -8,7 +8,8 @@ var AI = function(level) {
 
   // recursive function that returns the minimax Value of a given game state
   function minimaxValue(state) {
-    if (state.isTerminal()) {
+    var count = state.blackMovesCount;
+    if (count == state.blackMovesCount + 4) {
       return Game.score(state);
     } else {
       var stateScore;
@@ -54,7 +55,6 @@ var AI = function(level) {
 
   // move functions based on a given level of intelligence. turn is the player to play, either white or black
   // ai chooses a random move
-  // rewrite for two positions
   function takeARandomMove(turn) {
     var available = game.currentState.allValidMoves(turn);
     var randomPosition = available[Math.floor(Math.random() * available.length)];
@@ -72,7 +72,8 @@ var AI = function(level) {
 
   // ai chooses the optimal move 40% of the time, suboptimal (2nd choice) 60%
   function takeANoviceMove(turn) {
-    var available = game.currentState.validMoves(currentState.turn);
+    var available = game.currentState.allValidMoves(turn);
+    var availableAction;
 
     // calculate score for each possible action
     for (i = 0; i < available.length; i++) {
@@ -83,7 +84,7 @@ var AI = function(level) {
 
       action.minimaxVal = minimaxValue(next);
 
-      return action;
+      availableAction.push(action);
     }
 
     if (turn == "W") {
@@ -104,22 +105,24 @@ var AI = function(level) {
         chosenAction = availableActions[0];
       }
     }
+
     var next = chosenAction.applyTo(game.currentState);
 
-    // puts x or o at chosen position on board
-    human.insertAt(chosenAction.movePosition, turn);
+    console.log(next.board)
+    $('.current-turn').html("White");
+
+    human.playMove(next);
 
     game.advanceTo(next);
   }
 
   // ai chooses the optimal move
   function takeAOptimalMove(turn) {
-    var available = game.currentState.validMoves(currentState.turn);
-    var availableActions;
+    var available = game.currentState.allValidMoves(turn);
+    var availableAction;
 
     // calculate score for each possible action
     for (i = 0; i < available.length; i++) {
-
       var action = new AIAction(available[i][0], available[i][1]);
 
       // get next state
@@ -140,6 +143,9 @@ var AI = function(level) {
 
     var chosenAction = availableActions[0];
     var next = chosenAction.applyTo(game.currentState);
+
+    console.log(next.board)
+    $('.current-turn').html("White");
 
     human.playMove(next);
 
