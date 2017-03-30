@@ -198,13 +198,21 @@ var AIAction = function(pos1, pos2) {
       next.board[this.movePosition] = "WK"
     }
 
-    // later add for more than one jump (valid moves only counts for single jumps right now anyway)
     if (this.isJump(this.initialPosition, this.movePosition)) {
-      next.board[(this.movePosition + this.initialPosition) / 2] = "E";
-      if (state.turn == "B") {
-        next.capWhitePieces++;
+      var multiJump = state.numberOfJumps(this.initialPosition, 0);
+      if (multiJump[1].length > 1) {
+        // multiple jumps are true
+        var multiJumpArray = [];
+
+        // loop to get all values out of the array within arrays
+
       } else {
-        next.capBlackPieces++;
+        next.board[(this.movePosition + this.initialPosition) / 2] = "E";
+        if (state.turn == "B") {
+          next.capWhitePieces++;
+        } else {
+          next.capBlackPieces++;
+        }
       }
     }
 

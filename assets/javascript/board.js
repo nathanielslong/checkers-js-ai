@@ -41,6 +41,30 @@ var State = function(old) {
     return this.board[index];
   }
 
+  // expands out arrays for multiple jumps
+  this.expandOutArray = function(array) {
+    var containsArray = false;
+    var arrayIndices = [];
+
+    for (i = 0; i < array.length; i++) {
+      if (typeof array[i] == 'object') {
+        containsArray = true;
+        arrayIndices.push(i);
+      }
+    }
+
+    if (containsArray) {
+      for (i = 0; i < arrayIndices.length; i++) {
+        var newArray = array.concat(array[arrayIndices[i]])
+        newArray.splice(arrayIndices[i],1);
+      }
+      return this.expandOutArray(newArray);
+    } else {
+      array = array.filter(function(x) {return x != undefined});
+      return array;
+    }
+  }
+
   // check if is king, return boolean
   this.isKing = function(index) {
     return /K/.test(this.position(index));
