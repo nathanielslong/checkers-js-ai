@@ -50,8 +50,19 @@ function clickEvents() {
           }
 
           if (Math.abs(endPosition - index) > 11) {
-            next.board[(endPosition + index) / 2] = "E";
-            next.capBlackPieces++;
+            var multiJump = globals.game.currentState.numberOfJumps(index, 0);
+            multiJump = globals.game.currentState.expandOutArray(multiJump);
+            if (multiJump.length > 2) {
+
+              for (i = 0; i < multiJump.length - 1; i++) {
+                next.board[(multiJump[i + 1] + multiJump[i]) / 2] = "E";
+                next.capBlackPieces++;
+              }
+
+            } else {
+              next.board[(endPosition + index) / 2] = "E";
+              next.capBlackPieces++;
+            }
           }
 
           human.playMove(next);
