@@ -7,8 +7,8 @@ var AI = function(level) {
   var game = {};
 
   // recursive function that returns the minimax Value of a given game state
-  function minimaxValue(state) {
-    if (/*endingcondiitonhere*/false) {
+  function minimaxValue(state, count = 0) {
+    if (count == 1) {
       console.log("finishing here")
       return Game.score(state);
     } else {
@@ -36,7 +36,7 @@ var AI = function(level) {
 
       // gets minimax value for all the available next states
       availableNextStates.forEach( function(nextState) {
-        var nextScore = minimaxValue(nextState);
+        var nextScore = minimaxValue(nextState, 1);
         console.log("one done")
 
         if (state.turn == "W") {
