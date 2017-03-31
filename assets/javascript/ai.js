@@ -8,10 +8,11 @@ var AI = function(level) {
 
   // recursive function that returns the minimax Value of a given game state
   function minimaxValue(state) {
-    var count = state.blackMovesCount;
-    if (count == state.blackMovesCount + 4) {
+    if (/*endingcondiitonhere*/false) {
+      console.log("finishing here")
       return Game.score(state);
     } else {
+      console.log("still going")
       var stateScore;
 
       if (state.turn == "W") {
@@ -22,7 +23,7 @@ var AI = function(level) {
         stateScore = 1000000;
       }
 
-      var availableMoves = state.validMoves(state.turn);
+      var availableMoves = state.allValidMoves(state.turn);
 
       // calculates available next states
       for (i = 0; i < availableMoves.length; i++) {
@@ -36,6 +37,7 @@ var AI = function(level) {
       // gets minimax value for all the available next states
       availableNextStates.forEach( function(nextState) {
         var nextScore = minimaxValue(nextState);
+        console.log("one done")
 
         if (state.turn == "W") {
           // maximize W
@@ -73,7 +75,7 @@ var AI = function(level) {
   // ai chooses the optimal move 40% of the time, suboptimal (2nd choice) 60%
   function takeANoviceMove(turn) {
     var available = game.currentState.allValidMoves(turn);
-    var availableAction;
+    var availableAction = [];
 
     // calculate score for each possible action
     for (i = 0; i < available.length; i++) {
@@ -119,7 +121,7 @@ var AI = function(level) {
   // ai chooses the optimal move
   function takeAOptimalMove(turn) {
     var available = game.currentState.allValidMoves(turn);
-    var availableAction;
+    var availableAction = [];
 
     // calculate score for each possible action
     for (i = 0; i < available.length; i++) {
