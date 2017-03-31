@@ -10,6 +10,7 @@ var State = function(old) {
   // Sets whose turn it is (human or ai)
   this.turn = "";
 
+  this.finished = false;
   // Black Moves Count: number of moves for the AI player
   this.blackMovesCount = 0;
 
