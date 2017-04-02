@@ -15,13 +15,14 @@ function containedMove(index, array) {
 // sets event listeners for clicks, turns off at the end
 function clickEvents() {
   $('.board').on('click', '.odd', function() {
+    console.log('clicked')
     var $this = $(this);
 
     var validMoves = globals.game.currentState.allValidMoves(globals.game.currentState.turn);
 
     var index = parseInt($this.data('index'));
 
-    if (globals.game.status == "running" && globals.game.currentState.turn == "W" && /W/.test($this.html()) && containedMove(index, validMoves)) {
+    if (globals.game.status == "running" && globals.game.currentState.turn == "W" && /W/.test(globals.game.currentState.board[index]) && containedMove(index, validMoves)) {
       var possibleMoves = globals.game.currentState.indexValidMoves(index)
 
       var endingLocations = possibleMoves.map(function(x) {return x[1]})
