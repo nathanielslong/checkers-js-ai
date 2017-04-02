@@ -32,6 +32,10 @@
   color: #FF6A00;
 }
 
+.fa {
+  line-height: 45px;
+}
+
 .odd {
   height: 45px;
   width: 45px;
@@ -111,4 +115,3 @@
 .start:hover {
   opacity: 1;
 }
-

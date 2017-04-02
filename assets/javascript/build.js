@@ -25,14 +25,14 @@ function populateBoard(board = "undefined") {
     for (j = 0; j < 100; j++) {
       if ($(domBoard[j]).hasClass('odd')) {
         if (j >= 0 && j <= 38) {
-          $(domBoard[j]).find("i").addClass("fa fa-circle");
+          $(domBoard[j]).find("i").addClass("fa fa-circle fa-lg");
         } else if (j > 60) {
-          $(domBoard[j]).find("i").addClass("fa fa-circle-o");
+          $(domBoard[j]).find("i").addClass("fa fa-circle-o fa-lg");
         } else {
-          $(domBoard[j]).find("i").addClass("fa fa-circle-o even");
+          $(domBoard[j]).find("i").addClass("fa fa-circle-o even fa-lg");
         }
       } else {
-        $(domBoard[j]).find("i").addClass("fa fa-circle-o even");
+        $(domBoard[j]).find("i").addClass("fa fa-circle-o even fa-lg");
       }
     }
   } else {
@@ -41,14 +41,22 @@ function populateBoard(board = "undefined") {
     for (j = 0; j < 100; j++) {
       if ($(domBoard[j]).hasClass('odd')) {
         if (/W/.test(board[j])) {
-          $(domBoard[j]).find("i").removeClass().addClass("fa fa-circle-o");
+          if (/K/.test(board[j])) {
+            $(domBoard[j]).find("i").removeClass().addClass("fa fa-check-circle-o fa-lg");
+          } else {
+            $(domBoard[j]).find("i").removeClass().addClass("fa fa-circle-o fa-lg");
+          }
         } else if (/B/.test(board[j])) {
-          $(domBoard[j]).find("i").removeClass().addClass("fa fa-circle");
+          if (/K/.test(board[j])) {
+            $(domBoard[j]).find("i").removeClass().addClass("fa fa-check-circle fa-lg");
+          } else {
+            $(domBoard[j]).find("i").removeClass().addClass("fa fa-circle fa-lg");
+          }
         } else {
-          $(domBoard[j]).find("i").removeClass().addClass("fa fa-circle-o even");
+          $(domBoard[j]).find("i").removeClass().addClass("fa fa-circle-o even fa-lg");
         }
       } else {
-        $(domBoard[j]).find("i").removeClass().addClass("fa fa-circle-o even");
+        $(domBoard[j]).find("i").removeClass().addClass("fa fa-circle-o even fa-lg");
       }
     }
   }

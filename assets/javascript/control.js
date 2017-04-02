@@ -15,7 +15,6 @@ function containedMove(index, array) {
 // sets event listeners for clicks, turns off at the end
 function clickEvents() {
   $('.board').on('click', '.odd', function() {
-    console.log('clicked')
     var $this = $(this);
 
     var validMoves = globals.game.currentState.allValidMoves(globals.game.currentState.turn);
