@@ -21,7 +21,7 @@ function clickEvents() {
 
     var index = parseInt($this.data('index'));
 
-    if (globals.game.status == "running" && globals.game.currentState.turn == "W" && /W/.test($this.html()) && containedMove(index, validMoves)) {
+    if (globals.game.status == "running" && globals.game.currentState.turn == "W" && /W/.test(globals.game.currentState.board[index]) && containedMove(index, validMoves)) {
       var possibleMoves = globals.game.currentState.indexValidMoves(index)
 
       var endingLocations = possibleMoves.map(function(x) {return x[1]})

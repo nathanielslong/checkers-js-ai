@@ -1,18 +1,18 @@
 // in the div board, append divs so that 10 fit in each row
 function buildBoard() {
-  for (i = 0; i < 100; i++) {
-    $('.board').append("<div class='cell' id=position-" + i + " data-index=" + i + "></div>")
-    if (Math.floor(i / 10) % 2 == 0) {
-      if (i % 2 == 0) {
-        $('#position-' + i).addClass("even");
+  for (j = 0; j < 100; j++) {
+    $('.board').append("<div class='cell' id=position-" + j + " data-index=" + j + "><i></i></div>")
+    if (Math.floor(j / 10) % 2 == 0) {
+      if (j % 2 == 0) {
+        $('#position-' + j).addClass("even");
       } else {
-        $('#position-' + i).addClass("odd");
+        $('#position-' + j).addClass("odd");
       }
     } else {
-      if (i % 2 != 0) {
-        $('#position-' + i).addClass("even");
+      if (j % 2 != 0) {
+        $('#position-' + j).addClass("even");
       } else {
-        $('#position-' + i).addClass("odd");
+        $('#position-' + j).addClass("odd");
       }
     }
   }
@@ -22,24 +22,42 @@ function populateBoard(board = "undefined") {
   if (typeof board !== 'object') {
     var domBoard = $('.cell');
 
-    for (i = 0; i < 100; i++) {
-      if ($(domBoard[i]).hasClass('odd')) {
-        if (i >= 0 && i <= 38) {
-          $(domBoard[i]).html("B");
-        } else if (i > 38 && i < 60) {
-          $(domBoard[i]).html("E");
+    for (j = 0; j < 100; j++) {
+      if ($(domBoard[j]).hasClass('odd')) {
+        if (j >= 0 && j <= 38) {
+          $(domBoard[j]).find("i").addClass("fa fa-circle fa-lg");
+        } else if (j > 60) {
+          $(domBoard[j]).find("i").addClass("fa fa-circle-o fa-lg");
         } else {
-          $(domBoard[i]).html("W");
+          $(domBoard[j]).find("i").addClass("fa fa-circle-o even fa-lg");
         }
       } else {
-        $(domBoard[i]).html("E");
+        $(domBoard[j]).find("i").addClass("fa fa-circle-o even fa-lg");
       }
     }
   } else {
     var domBoard = $('.cell');
 
-    for (i = 0; i < 100; i++) {
-      $(domBoard[i]).text(board[i])
+    for (j = 0; j < 100; j++) {
+      if ($(domBoard[j]).hasClass('odd')) {
+        if (/W/.test(board[j])) {
+          if (/K/.test(board[j])) {
+            $(domBoard[j]).find("i").removeClass().addClass("fa fa-check-circle-o fa-lg");
+          } else {
+            $(domBoard[j]).find("i").removeClass().addClass("fa fa-circle-o fa-lg");
+          }
+        } else if (/B/.test(board[j])) {
+          if (/K/.test(board[j])) {
+            $(domBoard[j]).find("i").removeClass().addClass("fa fa-check-circle fa-lg");
+          } else {
+            $(domBoard[j]).find("i").removeClass().addClass("fa fa-circle fa-lg");
+          }
+        } else {
+          $(domBoard[j]).find("i").removeClass().addClass("fa fa-circle-o even fa-lg");
+        }
+      } else {
+        $(domBoard[j]).find("i").removeClass().addClass("fa fa-circle-o even fa-lg");
+      }
     }
   }
 }
