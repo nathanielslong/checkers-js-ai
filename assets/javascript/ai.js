@@ -8,11 +8,9 @@ var AI = function(level) {
 
   // recursive function that returns the minimax Value of a given game state
   function minimaxValue(state, count = 0) {
-    if (count == 1) {
-      console.log("finishing here")
+    if (count == 4) {
       return Game.score(state);
     } else {
-      console.log("still going")
       var stateScore;
 
       if (state.turn == "W") {
@@ -24,6 +22,7 @@ var AI = function(level) {
       }
 
       var availableMoves = state.allValidMoves(state.turn);
+      var availableNextStates = [];
 
       // calculates available next states
       for (i = 0; i < availableMoves.length; i++) {
@@ -31,13 +30,12 @@ var AI = function(level) {
 
         var nextState = action.applyTo(state);
 
-        return nextState;
+        availableNextStates.push(nextState);
       }
 
       // gets minimax value for all the available next states
       availableNextStates.forEach( function(nextState) {
-        var nextScore = minimaxValue(nextState, 1);
-        console.log("one done")
+        var nextScore = minimaxValue(nextState, count + 1);
 
         if (state.turn == "W") {
           // maximize W
@@ -66,7 +64,6 @@ var AI = function(level) {
 
     human.playMove(next);
 
-    console.log(next.board)
     $('.current-turn').html("White");
 
     game.advanceTo(next);
@@ -78,7 +75,8 @@ var AI = function(level) {
     var availableAction = [];
 
     // calculate score for each possible action
-    for (i = 0; i < available.length; i++) {
+    var i = 0;
+    while (i < available.length) {
       var action = new AIAction(available[i][0], available[i][1]);
 
       // get next state
@@ -87,30 +85,30 @@ var AI = function(level) {
       action.minimaxVal = minimaxValue(next);
 
       availableAction.push(action);
+      i++;
     }
 
     if (turn == "W") {
       // white maximizes
-      availableActions.sort(AIAction.DESCENDING);
+      availableAction.sort(AIAction.DESCENDING);
     } else {
       // black minimizes
-      availableActions.sort(AIAction.ASCENDING);
+      availableAction.sort(AIAction.ASCENDING);
     }
 
     var chosenAction;
     if (Math.random() * 100 <= 40) {
-      chosenAction = availableActions[0];
+      chosenAction = availableAction[0];
     } else {
-      if (availableActions.length >= 2) {
-        chosenAction = availableActions[1];
+      if (availableAction.length >= 2) {
+        chosenAction = availableAction[1];
       } else {
-        chosenAction = availableActions[0];
+        chosenAction = availableAction[0];
       }
     }
 
     var next = chosenAction.applyTo(game.currentState);
 
-    console.log(next.board)
     $('.current-turn').html("White");
 
     human.playMove(next);
@@ -121,10 +119,11 @@ var AI = function(level) {
   // ai chooses the optimal move
   function takeAOptimalMove(turn) {
     var available = game.currentState.allValidMoves(turn);
-    var availableAction = [];
+    var availableActions = [];
 
     // calculate score for each possible action
-    for (i = 0; i < available.length; i++) {
+    var i = 0;
+    while (i < available.length) {
       var action = new AIAction(available[i][0], available[i][1]);
 
       // get next state
@@ -132,7 +131,8 @@ var AI = function(level) {
 
       action.minimaxVal = minimaxValue(next);
 
-      availableAction.push(action);
+      availableActions.push(action);
+      i++;
     }
 
     if (turn == "W") {
@@ -146,7 +146,6 @@ var AI = function(level) {
     var chosenAction = availableActions[0];
     var next = chosenAction.applyTo(game.currentState);
 
-    console.log(next.board)
     $('.current-turn').html("White");
 
     human.playMove(next);

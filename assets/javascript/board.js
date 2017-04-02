@@ -641,6 +641,7 @@ Game.score = function(_state) {
     }
     // count captured pieces as value
     score = score + _state.capBlackPieces - _state.capWhitePieces;
+    return score;
   }
 }
 
