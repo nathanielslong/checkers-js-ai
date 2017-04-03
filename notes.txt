@@ -110,70 +110,15 @@ King test bottom  =       ['E','B','E','B','E','B','E','B','E','B',
 
 single line version = ['E','B','E','B','E','B','E','B','E','B','B','E','E','E','B','E','B','E','B','E','E','B','E','B','E','B','E','B','E','B','W','E','B','E','B','E','B','E','B','E','E','B','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','W','E','W','E','W','E','W','E','E','W','E','E','E','W','E','W','E','E','W','E','E','E','W','E','W','E','W','W','E','BK','E','W','E','W','E','W','E']
 
+making a white king  =    ['E','E','E','E','E','B','E','B','E','B',
+                           'B','E','W','E','B','E','B','E','B','E',
+                           'E','B','E','B','E','B','E','B','E','B',
+                           'B','E','B','E','B','E','B','E','B','E',
+                           'E','E','E','E','E','E','E','E','E','E',
+                           'E','E','E','E','E','E','E','E','E','E',
+                           'E','E','E','W','E','W','E','W','E','W',
+                           'W','E','W','E','W','E','W','E','W','E',
+                           'E','W','E','W','E','W','E','W','E','W',
+                           'W','E','W','E','W','E','W','E','W','E']
 
-
-
-
-  function takeARandomMove(turn) {
-    var available = game.currentState.allValidMoves(turn);
-    var randomPosition = available[Math.floor(Math.random() * available.length)];
-    var action = new AIAction(randomPosition[0],randomPosition[1]);
-
-    var next = action.applyTo(game.currentState);
-
-    human.playMove(next);
-
-    console.log(next.board)
-    $('.current-turn').html("White");
-
-    game.advanceTo(next);
-  }
-
-  // ai chooses the optimal move 40% of the time, suboptimal (2nd choice) 60%
-
-
-
-  function takeANoviceMove(turn) {
-    var available = game.currentState.allValidMoves(turn);
-
-    // calculate score for each possible action
-    for (i = 0; i < available.length; i++) {
-      var action = new AIAction(available[i][0], available[i][1]);
-
-      // get next state
-      var next = action.applyTo(game.currentState);
-
-      action.minimaxVal = minimaxValue(next);
-
-      return action;
-    }
-
-    if (turn == "W") {
-      // white maximizes
-      availableActions.sort(AIAction.DESCENDING);
-    } else {
-      // black minimizes
-      availableActions.sort(AIAction.ASCENDING);
-    }
-
-    var chosenAction;
-    if (Math.random() * 100 <= 40) {
-      chosenAction = availableActions[0];
-    } else {
-      if (availableActions.length >= 2) {
-        chosenAction = availableActions[1];
-      } else {
-        chosenAction = availableActions[0];
-      }
-    }
-
-    var next = chosenAction.applyTo(game.currentState);
-
-    console.log(next.board)
-    $('.current-turn').html("White");
-
-    // puts x or o at chosen position on board
-    human.playMove(next);
-
-    game.advanceTo(next);
-  }
+single line version = ['E','E','E','E','E','B','E','B','E','B','B','E','W','E','B','E','B','E','B','E','E','B','E','B','E','B','E','B','E','B','B','E','B','E','B','E','B','E','B','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','E','W','E','W','E','W','E','W','W','E','W','E','W','E','W','E','W','E','E','W','E','W','E','W','E','W','E','W','W','E','W','E','W','E','W','E','W','E']
