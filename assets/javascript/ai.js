@@ -8,7 +8,7 @@ var AI = function(level) {
 
   // recursive function that returns the minimax Value of a given game state
   function minimaxValue(state, count = 0) {
-    if (count == 4) {
+    if (count == 5) {
       return Game.score(state);
     } else {
       var stateScore;
@@ -82,7 +82,7 @@ var AI = function(level) {
       // get next state
       var next = action.applyTo(game.currentState);
 
-      action.minimaxVal = minimaxValue(next);
+      action.minimaxVal = minimaxValue(next, 2);
 
       availableAction.push(action);
       i++;
@@ -96,18 +96,7 @@ var AI = function(level) {
       availableAction.sort(AIAction.ASCENDING);
     }
 
-    var chosenAction;
-    if (Math.random() * 100 <= 40) {
-      chosenAction = availableAction[0];
-    } else {
-      if (availableAction.length >= 2) {
-        chosenAction = availableAction[1];
-      } else {
-        chosenAction = availableAction[0];
-      }
-    }
-
-    var next = chosenAction.applyTo(game.currentState);
+    var next = availableAction[0].applyTo(game.currentState);
 
     $('.current-turn').html("White");
 

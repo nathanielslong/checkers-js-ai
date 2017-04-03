@@ -25,11 +25,11 @@ function populateBoard(board = "undefined") {
     for (j = 0; j < 100; j++) {
       if ($(domBoard[j]).hasClass('odd')) {
         if (j >= 0 && j <= 38) {
-          $(domBoard[j]).find("i").addClass("fa fa-circle fa-lg");
+          $(domBoard[j]).find("i").addClass("fa fa-circle fa-lg odd");
         } else if (j > 60) {
-          $(domBoard[j]).find("i").addClass("fa fa-circle-o fa-lg");
+          $(domBoard[j]).find("i").addClass("fa fa-circle-o fa-lg odd");
         } else {
-          $(domBoard[j]).find("i").addClass("fa fa-circle-o even fa-lg");
+          $(domBoard[j]).find("i").addClass("fa fa-circle-o empty fa-lg");
         }
       } else {
         $(domBoard[j]).find("i").addClass("fa fa-circle-o even fa-lg");
@@ -42,18 +42,18 @@ function populateBoard(board = "undefined") {
       if ($(domBoard[j]).hasClass('odd')) {
         if (/W/.test(board[j])) {
           if (/K/.test(board[j])) {
-            $(domBoard[j]).find("i").removeClass().addClass("fa fa-check-circle-o fa-lg");
+            $(domBoard[j]).find("i").removeClass().addClass("fa fa-check-circle-o odd fa-lg");
           } else {
-            $(domBoard[j]).find("i").removeClass().addClass("fa fa-circle-o fa-lg");
+            $(domBoard[j]).find("i").removeClass().addClass("fa fa-circle-o odd fa-lg");
           }
         } else if (/B/.test(board[j])) {
           if (/K/.test(board[j])) {
-            $(domBoard[j]).find("i").removeClass().addClass("fa fa-check-circle fa-lg");
+            $(domBoard[j]).find("i").removeClass().addClass("fa fa-check-circle odd fa-lg");
           } else {
-            $(domBoard[j]).find("i").removeClass().addClass("fa fa-circle fa-lg");
+            $(domBoard[j]).find("i").removeClass().addClass("fa fa-circle odd fa-lg");
           }
         } else {
-          $(domBoard[j]).find("i").removeClass().addClass("fa fa-circle-o even fa-lg");
+          $(domBoard[j]).find("i").removeClass().addClass("fa fa-circle empty fa-lg");
         }
       } else {
         $(domBoard[j]).find("i").removeClass().addClass("fa fa-circle-o even fa-lg");
