@@ -188,9 +188,9 @@ var AIAction = function(pos1, pos2) {
     next.board[this.movePosition] = state.board[this.initialPosition]
 
     //if move position is either end, mark king
-    if (state.turn == "B" && this.movePosition >= 90) {
+    if (state.turn == "B" && this.movePosition >= 90 && !/K/.test(state.board[this.initialPosition])) {
       next.board[this.movePosition] = "BK"
-    } else if (state.turn == "W" && this.movePosition < 10) {
+    } else if (state.turn == "W" && this.movePosition < 10 && !/K/.test(state.board[this.initialPosition])) {
       next.board[this.movePosition] = "WK"
     }
 
