@@ -8,7 +8,7 @@ var AI = function(level) {
 
   // recursive function that returns the minimax Value of a given game state
   function minimaxValue(state, count = 0) {
-    if (count == 4) {
+    if (count == 5) {
       return Game.score(state);
     } else {
       var stateScore;
