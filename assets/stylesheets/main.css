@@ -44,6 +44,15 @@
   background-color: #AA4600;
 }
 
+.empty {
+  height: 45px;
+  width: 45px;
+  display: inline-block;
+  border: 1px black solid;
+  background-color: #AA4600;
+  color: #AA4600;
+}
+
 .title {
   font-family: "Aldrich", sans-serif;
   font-size: 40px;
