@@ -45,8 +45,8 @@ function clickEvents() {
           next.board[index] = "E";
           next.board[endPosition] = globals.game.currentState.board[index];
 
-          if (index < 10) {
-            next.board[this.movePosition] = "WK"
+          if (endPosition < 10 && !/K/.test(globals.game.currentState.board[index])) {
+            next.board[endPosition] = "WK"
           }
 
           if (Math.abs(endPosition - index) > 11) {

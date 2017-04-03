@@ -553,7 +553,7 @@ var State = function(old) {
       return true;
 
       //Then check draw conditions
-    } else if (this.checkForKings()[0].length == 1 && this.checkForKings()[1].length == 1) {
+    } else if (this.checkForKings()[0].length == 1 && this.checkForKings()[1].length == 1 && this.capBlackPieces == 19 && this.capWhitePieces == 19) {
       this.result = "draw";
       return true;
     } else {
